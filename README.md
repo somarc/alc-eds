@@ -1,34 +1,35 @@
-# Your Project's Title...
-Your project's description...
+# Atlantic Lottery — EDS fidelity migration
 
-## Environments
-- Preview: https://main--{repo}--{owner}.aem.page/
-- Live: https://main--{repo}--{owner}.aem.live/
+Greenfield Adobe Edge Delivery Services implementation of the public ALC homepage,
+with Document Authoring as the content source of truth. This is a migration study,
+not the official Atlantic Lottery site.
 
-## Documentation
+- [Reference site](https://www.alc.ca/content/alc/en.html)
+- [Feature preview](https://migration-fidelity--alc-eds--somarc.aem.page/)
+- [Canvas / homepage](https://da.live/canvas?ref=migration-fidelity#/somarc/alc-eds/index)
+- [DA content](https://da.live/#/somarc/alc-eds)
+- [Assessment, block shapes and boundaries](docs/MIGRATION.md)
 
-Before using the aem-boilerplate, we recommand you to go through the documentation on https://www.aem.live/docs/ and more specifically:
-1. [Developer Tutorial](https://www.aem.live/developer/tutorial)
-2. [The Anatomy of a Project](https://www.aem.live/developer/anatomy-of-a-project)
-3. [Web Performance](https://www.aem.live/developer/keeping-it-100)
-4. [Markup, Sections, Blocks, and Auto Blocking](https://www.aem.live/developer/markup-sections-blocks)
-
-## Installation
+## Development
 
 ```sh
-npm i
-```
-
-## Linting
-
-```sh
+npm ci
 npm run lint
+da --org somarc --repo alc-eds --branch migration-fidelity site pin-target
+da up --mode runtime --port 3008 --url https://migration-fidelity--alc-eds--somarc.aem.page
 ```
 
-## Local development
+`da up --mode runtime` uses the official AEM CLI, local code and previewed DA
+content. Hydrated documents and operation receipts belong in the external
+workspace returned by `da workspace show`, never in this checkout.
 
-1. Create a new repository based on the `aem-boilerplate` template
-1. Add the [AEM Code Sync GitHub App](https://github.com/apps/aem-code-sync) to the repository
-1. Install the [AEM CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/aem-cli`
-1. Start AEM Proxy: `aem up` (opens your browser at `http://localhost:3000`)
-1. Open the `{repo}` directory in your favorite IDE and start coding :)
+## Initial scope
+
+Complete English homepage, desktop/mobile shared chrome, five original campaign
+slides, four winners, seven cards, four promotional-rail items, and Canvas-aware
+block decoration. Content is a dated reference snapshot. Transactional and live
+data functionality remains on the original site.
+
+Original brand art/fonts remain subject to their rights holders. The Apache
+license applies to boilerplate and implementation code, not a relicensing of
+Atlantic Lottery assets. No production publication is implied by an EDS preview.

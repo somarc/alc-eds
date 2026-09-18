@@ -1,0 +1,292 @@
+@layer components {
+  .winners {
+    position: relative;
+    color: #fff;
+    background: #65baf7 url('../../icons/winners-background-mobile.png') no-repeat center;
+  }
+
+  .winners .winner-slide {
+    position: relative;
+    inline-size: var(--page-width);
+    margin-inline: auto;
+    padding: 1.25rem 2rem 2.5rem;
+    display: grid;
+    justify-items: center;
+  }
+
+  .winners .winner-portrait {
+    inline-size: 10.125rem;
+    block-size: 10.125rem;
+    z-index: 1;
+  }
+
+  .winners .winner-portrait :is(p, picture, .prosemirror-editor, .ProseMirror) {
+    block-size: 100%;
+    margin: 0;
+  }
+
+  .winners .winner-portrait img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    object-fit: cover;
+    box-shadow: 0 3px 18px rgb(0 82 155 / 50%);
+  }
+
+  .winners .winner-bio {
+    text-align: center;
+    z-index: 1;
+  }
+
+  .winners .winner-bio h3 {
+    font: 700 1.125rem / 1.1 var(--heading-font-family);
+    margin: 1.25rem 0 0.625rem;
+  }
+
+  .winners .winner-location p {
+    font-size: 1.375rem;
+    line-height: 1.1;
+    margin: 0 0 0.625rem;
+  }
+
+  .winners .winner-action a {
+    display: block;
+    position: relative;
+    inline-size: 13.5rem;
+    margin: 1rem auto 0;
+    padding: 0 2.5rem 0 1rem;
+    border-radius: 30px;
+    border: 2px solid #fff;
+    color: #fff;
+    background: var(--link-color);
+    font: 500 1.125rem / 2.5625rem var(--heading-font-family);
+  }
+
+  .winners .winner-action a::after {
+    position: absolute;
+    inset-inline-end: 0.75rem;
+    content: '\e315';
+    font-family: 'Material Icons', sans-serif;
+  }
+
+  .winners .winner-game {
+    position: relative;
+    margin-top: 1.25rem;
+    inline-size: 16rem;
+    block-size: 4.25rem;
+  }
+
+  .winners .winner-logo {
+    position: absolute;
+    inset: 0 auto auto 0;
+    block-size: 4.5rem;
+    inline-size: 8rem;
+    z-index: 1;
+  }
+
+  .winners .winner-logo :is(p, picture, .prosemirror-editor, .ProseMirror) {
+    margin: 0;
+    block-size: 100%;
+  }
+
+  .winners .winner-logo img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: contain;
+  }
+
+  .winners .winner-ribbon {
+    position: absolute;
+    inset: 1rem 0 auto 1rem;
+    padding: 0 1rem 0 6rem;
+    background: #ec2f2d;
+    border-radius: 5px;
+    font: 700 1.25rem / 1.5 var(--heading-font-family);
+  }
+
+  .winners .winner-ribbon p {
+    margin: 0;
+  }
+
+  .winners .winner-prize {
+    position: relative;
+    z-index: 1;
+    color: #00529b;
+    font-size: 2.2rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .winners .winner-prize p {
+    margin: 0;
+  }
+
+  .winners .winner-prize strong {
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem 0.4rem 0.25rem;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    font-weight: 700;
+    background: linear-gradient(#fff 49%, #d1d1d1 50%, #eee 51%, #fff 52%);
+    box-shadow: 0 3px 1px rgb(0 82 155 / 25%);
+  }
+
+  .winners .carousel-controls {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .winners .carousel-controls button {
+    pointer-events: auto;
+    background: transparent;
+    color: #fff;
+    border: 0;
+    min-inline-size: 2.75rem;
+    min-block-size: 2.75rem;
+  }
+
+  .winners :is(.carousel-previous, .carousel-next) {
+    position: absolute;
+    inset-block-start: calc(50% - 3rem);
+    block-size: 6rem;
+  }
+
+  .winners .carousel-previous {
+    inset-inline-start: 0.5rem;
+  }
+
+  .winners .carousel-next {
+    inset-inline-end: 0.5rem;
+  }
+
+  .winners :is(.carousel-previous, .carousel-next)::before {
+    content: '\e314';
+    font: 3rem 'Material Icons', sans-serif;
+  }
+
+  .winners .carousel-next::before {
+    content: '\e315';
+  }
+
+  .winners .carousel-dots {
+    position: absolute;
+    display: flex;
+    inset: auto 0 0;
+    justify-content: center;
+  }
+
+  .winners .carousel-dot {
+    font-size: 0;
+    position: relative;
+  }
+
+  .winners .carousel-dot::after {
+    content: '';
+    position: absolute;
+    inset: 50% auto auto 50%;
+    translate: -50% -50%;
+    inline-size: 8px;
+    block-size: 8px;
+    background: #b3ddfb;
+    border: 2px solid #b3ddfb;
+    border-radius: 50%;
+  }
+
+  .winners .carousel-dot[aria-pressed='true']::after {
+    background: #f29400;
+    border-color: #fff;
+  }
+
+  @media (width >= 48em) {
+    .winners {
+      background-image: url('../../icons/winners-background.png');
+    }
+
+    .winners .winner-slide {
+      grid-template-columns: 25% 33.333% 41.667%;
+      grid-template-rows: 5.3125rem 1fr;
+      justify-items: start;
+      block-size: 15.3125rem;
+      padding: 1.25rem 1.25rem 2.5rem;
+    }
+
+    .winners .winner-slide::before {
+      content: '';
+      position: absolute;
+      inset: 0.4375rem auto auto 11.375rem;
+      inline-size: 15.625rem;
+      block-size: 11.3125rem;
+      background: var(--province-map) no-repeat top left / contain;
+      pointer-events: none;
+    }
+
+    .winners .province-pe {
+      --province-map: url('../../icons/province-pe.png');
+    }
+
+    .winners .province-ns {
+      --province-map: url('../../icons/province-ns.png');
+    }
+
+    .winners .province-nl {
+      --province-map: url('../../icons/province-nl.png');
+    }
+
+    .winners .province-nb {
+      --province-map: url('../../icons/province-nb.png');
+    }
+
+    .winners .winner-portrait {
+      grid-row: 1 / 3;
+      margin: 1.5625rem 0 0 1.25rem;
+    }
+
+    .winners .winner-bio {
+      grid-row: 1 / 3;
+      margin-inline-start: 1.5625rem;
+      text-align: start;
+    }
+
+    .winners .winner-action a {
+      margin-inline-start: -0.625rem;
+    }
+
+    .winners .winner-game {
+      margin-top: 1.125rem;
+    }
+
+    .winners .winner-prize {
+      grid-column: 3;
+      font-size: 2.5rem;
+      margin-inline-start: 1.25rem;
+    }
+  }
+
+  @media (width >= 75em) {
+    .winners .winner-portrait {
+      inline-size: 12.75rem;
+      block-size: 12.75rem;
+      margin-top: 0.125rem;
+    }
+
+    .winners .winner-slide::before {
+      inset-inline-start: 16.375rem;
+    }
+
+    .winners .winner-game {
+      margin-top: 0;
+    }
+
+    .winners .winner-logo {
+      block-size: 5rem;
+    }
+
+    .winners .winner-prize {
+      font-size: 4.5rem;
+    }
+  }
+}

@@ -1,0 +1,78 @@
+@layer components {
+  .promo-rail {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .promo-rail .promo-item {
+    position: relative;
+  }
+
+  .promo-rail .rendition {
+    display: none;
+  }
+
+  .promo-rail .rendition-mobile {
+    display: block;
+  }
+
+  .promo-rail .rendition :is(p, picture, img) {
+    display: block;
+    inline-size: 100%;
+    margin: 0;
+  }
+
+  .promo-rail .media-action {
+    position: absolute;
+    inset: 0;
+  }
+
+  .promo-rail .media-action :is(p, a, .prosemirror-editor, .ProseMirror) {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+  }
+
+  .promo-rail .media-action a {
+    font-size: 0;
+  }
+
+  @media (width >= 48em) {
+    .promo-rail {
+      inline-size: 50%;
+    }
+
+    .promo-rail .rendition-mobile {
+      display: none;
+    }
+
+    .promo-rail .rendition-tablet {
+      display: block;
+    }
+  }
+
+  @media (width >= 75em) {
+    .promo-rail {
+      inline-size: 100%;
+    }
+
+    .promo-rail .rendition-tablet {
+      display: none;
+    }
+
+    .promo-rail .rendition-desktop {
+      display: block;
+    }
+  }
+
+  html[quick-edit='true'] .promo-rail .media-action {
+    position: relative;
+    background: #fff;
+    padding: 0.25rem;
+  }
+
+  html[quick-edit='true'] .promo-rail .media-action a {
+    font-size: 0.875rem;
+  }
+}

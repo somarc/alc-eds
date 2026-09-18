@@ -1,0 +1,151 @@
+@layer components {
+  .campaign-carousel {
+    position: relative;
+    block-size: 23.4375rem;
+    background: #f4f4f4;
+  }
+
+  .campaign-carousel .campaign-slide {
+    position: relative;
+    block-size: 100%;
+    overflow: hidden;
+  }
+
+  .campaign-carousel .rendition {
+    display: none;
+    block-size: 100%;
+  }
+
+  .campaign-carousel .rendition-mobile {
+    display: block;
+  }
+
+  .campaign-carousel .rendition :is(p, picture, .prosemirror-editor, .ProseMirror) {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+  }
+
+  .campaign-carousel .rendition img {
+    display: block;
+    inline-size: 100%;
+    max-inline-size: none;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .campaign-carousel .media-action {
+    position: absolute;
+    inset: 0;
+  }
+
+  .campaign-carousel .media-action :is(p, a, .prosemirror-editor, .ProseMirror) {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+  }
+
+  .campaign-carousel .media-action a {
+    font-size: 0;
+  }
+
+  .campaign-carousel .carousel-controls {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: 3.25rem;
+    display: flex;
+    justify-content: space-between;
+    background: rgb(255 255 255 / 90%);
+  }
+
+  .campaign-carousel .carousel-controls button {
+    min-inline-size: 2.75rem;
+    min-block-size: 2.75rem;
+    border: 0;
+    color: var(--blue);
+    background: transparent;
+  }
+
+  .campaign-carousel :is(.carousel-previous, .carousel-next)::before {
+    font: 1.75rem 'Material Icons', sans-serif;
+    content: '\e314';
+  }
+
+  .campaign-carousel .carousel-next::before {
+    content: '\e315';
+  }
+
+  .campaign-carousel .carousel-dots {
+    display: flex;
+    align-items: center;
+  }
+
+  .campaign-carousel .carousel-dot {
+    position: relative;
+    font-size: 0;
+  }
+
+  .campaign-carousel .carousel-dot::after {
+    content: '';
+    position: absolute;
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    background: #69727b;
+    border-radius: 50%;
+    inset: 50% auto auto 50%;
+    translate: -50% -50%;
+  }
+
+  .campaign-carousel .carousel-dot[aria-pressed='true']::after {
+    background: var(--blue);
+  }
+
+  @media (width >= 48em) {
+    .campaign-carousel {
+      block-size: 32.8125rem;
+    }
+
+    .campaign-carousel .rendition-mobile {
+      display: none;
+    }
+
+    .campaign-carousel .rendition-tablet {
+      display: block;
+    }
+
+    .campaign-carousel .rendition img {
+      object-fit: none;
+    }
+  }
+
+  @media (width >= 75em) {
+    .campaign-carousel .rendition-tablet {
+      display: none;
+    }
+
+    .campaign-carousel .rendition-desktop {
+      display: block;
+    }
+
+    .campaign-carousel .carousel-controls {
+      padding-inline: max(0px, calc((100% - 75rem) / 2));
+    }
+  }
+
+  html[quick-edit='true'] .campaign-carousel .media-action {
+    inset: auto 1rem 3.75rem auto;
+    block-size: auto;
+    inline-size: auto;
+    background: #fff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+  }
+
+  html[quick-edit='true'] .campaign-carousel .media-action a {
+    font-size: 0.875rem;
+  }
+}

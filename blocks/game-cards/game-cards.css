@@ -1,0 +1,196 @@
+@layer components {
+  .game-cards {
+    display: grid;
+    gap: 1.6875rem 1.25rem;
+  }
+
+  .game-cards .game-card {
+    min-inline-size: 0;
+    font: 1rem / 1.2 var(--body-font-family);
+  }
+
+  .game-cards .game-card-media {
+    position: relative;
+    block-size: 11.5625rem;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .game-cards .game-card-media > :is(p, picture, .prosemirror-editor),
+  .game-cards .game-card-media > .prosemirror-editor > .ProseMirror,
+  .game-cards .game-card-media > :where(.prosemirror-editor) > :where(.ProseMirror) > p {
+    margin: 0;
+    block-size: 100%;
+  }
+
+  .game-cards .game-card-media picture {
+    display: block;
+    block-size: 100%;
+  }
+
+  .game-cards .game-card-media img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: none;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .game-cards .game-card-copy {
+    position: relative;
+    min-block-size: 13.75rem;
+    padding: 1.125rem 2.5rem 5rem;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 8px -2px rgb(0 0 0 / 45%);
+  }
+
+  .game-cards .game-card-title h3 {
+    margin: 0 0 0.625rem;
+    font: 700 1.25rem / 1.1 var(--body-font-family);
+  }
+
+  .game-cards .game-card-description {
+    min-block-size: 3.125rem;
+  }
+
+  .game-cards .game-card-description p {
+    margin: 0;
+  }
+
+  .game-cards .game-card-description a {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+  }
+
+  .game-cards .game-card-detail {
+    color: #198754;
+    font-size: 0.9375rem;
+    font-weight: 700;
+  }
+
+  .game-cards .game-card-detail p {
+    margin: 0;
+  }
+
+  .game-cards .game-card-action {
+    position: absolute;
+    inset-inline: 2.5rem;
+    inset-block-end: 1.6875rem;
+  }
+
+  .game-cards .game-card-action p {
+    margin: 0;
+  }
+
+  .game-cards .game-card-action a {
+    display: block;
+    position: relative;
+    border: 2px solid #fff;
+    border-radius: 30px;
+    background: var(--link-color);
+    color: #fff;
+    padding: 0 2.8125rem 0 0.9375rem;
+    min-block-size: 2.8125rem;
+    font: 500 1.125rem / 2.5625rem var(--heading-font-family);
+    box-shadow: 0 3px 5px rgb(0 82 155 / 10%);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .game-cards .game-card-action a::after {
+    position: absolute;
+    inset-inline-end: 0.75rem;
+    font-family: 'Material Icons', sans-serif;
+    content: '\e315';
+    font-size: 1.5rem;
+  }
+
+  .game-cards .game-card-action a:hover {
+    background: #005e95;
+    text-decoration: none;
+  }
+
+  .game-cards .game-card-overlay.jackpot {
+    position: absolute;
+    inset: auto 0 0;
+    display: flex;
+    block-size: 2.25rem;
+    color: #f2dc1e;
+    background: #0655aa;
+    border: 1px solid #e5c524;
+    font-weight: 700;
+  }
+
+  .game-cards .jackpot-amount {
+    min-inline-size: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #01152b;
+  }
+
+  .game-cards .jackpot p {
+    margin: 0;
+    font-size: 0.9375rem;
+    white-space: nowrap;
+  }
+
+  .game-cards .jackpot-extra {
+    flex: 1;
+    display: grid;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    padding-inline: 0.25rem;
+  }
+
+  .game-cards .jackpot-extra :is(p, picture) {
+    block-size: auto;
+  }
+
+  .game-cards .jackpot-extra img {
+    display: block;
+    object-fit: contain;
+    max-block-size: 2rem;
+    border-radius: 0;
+  }
+
+  .game-cards .new-flag {
+    position: absolute;
+    inset: -5px 11px auto auto;
+    inline-size: 80px;
+    block-size: 32px;
+    background: url('../../icons/alc-sprite.png') no-repeat 0 -159px;
+  }
+
+  .game-cards .new-flag p {
+    font-size: 0;
+    margin: 0;
+  }
+
+  @media (width >= 48em) {
+    .game-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (width < 25em) {
+    .game-cards .game-card-copy {
+      padding-inline: 1.75rem;
+    }
+
+    .game-cards .game-card-action {
+      inset-inline: 1.75rem;
+    }
+  }
+
+  html[quick-edit='true'] .game-cards .new-flag {
+    background: #f29400;
+    color: #fff;
+    text-align: center;
+  }
+
+  html[quick-edit='true'] .game-cards .new-flag p {
+    font-size: 1rem;
+  }
+}
