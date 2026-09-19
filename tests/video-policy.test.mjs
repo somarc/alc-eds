@@ -16,6 +16,14 @@ test('a browser without H.264 selects the supplied VP9 alternative', () => {
   assert.equal(selectPlayableVideo(sources, () => ''), null);
 });
 
+test('explicit authored codec rows support VP9 in an MP4 container', () => {
+  const sources = [
+    { url: 'https://example.com/h264.mp4', type: 'video/mp4; codecs="avc1.64001f"' },
+    { url: 'https://example.com/vp9.mp4', type: 'video/mp4; codecs="vp09.00.31.08"' },
+  ];
+  assert.equal(selectPlayableVideo(sources, (type) => (type.includes('vp09') ? 'probably' : '')), sources[1].url);
+});
+
 test('only ordinary HTTP(S) video links become media sources', () => {
   const base = 'https://example.aem.page/how-we-built-this';
   assert.equal(resolveVideoSource('./media_loop.mp4', base), 'https://example.aem.page/media_loop.mp4');

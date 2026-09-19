@@ -8,9 +8,13 @@ named references to other migration projects.
 
 One `video-hero` block inside the existing `story-cover, cinematic` section:
 
-1. Canonical MP4/H.264 and optional WebM/VP9 links in one media row.
-2. One canonical decorative poster image.
-3. The live eyebrow, H1, lede, CTA and independent-demo/film-credit note.
+1. `H.264` label cell and canonical H.264 MP4 link cell.
+2. Optional `VP9` label cell and canonical VP9-in-MP4 link cell.
+3. One canonical decorative poster image.
+4. The live eyebrow, H1, lede, CTA and independent-demo/film-credit note.
+
+Codec labels are explicit authored configuration, not inferred from file names
+or marketing link text. The single-source, one-cell legacy form remains valid.
 
 Media is uploaded through da-cli to DA's content bus under
 `/media/build-story/`. No generated image/video or page-content fixture is in Git.
@@ -47,10 +51,14 @@ must also hold if the reusable block is placed on a routed page.
 - Web delivery is a separately retained H.264 CRF20 derivative, without audio
   and with fast-start metadata: 2,224,471 bytes. Average SSIM against the native
   film was 0.992149; this is not a subjective-quality score.
-- A VP9/WebM alternative is 2,308,715 bytes with average SSIM 0.985948. Actual
-  playback testing found that Studio's open-source Chromium build cannot decode
-  H.264. Codec-qualified capability selection uses the WebM there, while keeping
-  MP4 for browsers that support it. Only the selected source is requested.
+- A VP9 web encode is 2,308,715 bytes with average SSIM 0.985948. Actual playback
+  testing found that Studio's open-source Chromium cannot decode H.264; actual
+  DA preview testing rejected the WebM container with HTTP 415. The VP9 packets
+  were therefore losslessly remuxed into a real MP4 container (`vp09` sample
+  entry), 2,309,165 bytes—not renamed or MIME-disguised. Codec-qualified selection
+  keeps H.264 for browsers that support it and selects the supplied VP9 alternative
+  where supported. Only the selected source is requested. The unserved WebM is
+  retained as production evidence, not linked from the page.
 - Poster: first decoded frame, WebP quality 88, 53,942 bytes.
 - Original generations, prompts, receipts, reviews, hashes and lineage remain
   in the Studio production package. Model-private reasoning is not included in

@@ -39,13 +39,19 @@
     background: #006faf;
   }
 
-  html[quick-edit='true'] .video-hero .video-source {
-    display: block;
+  html[quick-edit='true'] .video-hero .video-sources {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
     position: absolute;
     inset: 0 0 auto;
     z-index: 4;
     padding: 0.75rem 1.5rem;
     background: #032b4a;
+  }
+
+  html[quick-edit='true'] .video-hero .video-source {
+    display: block;
   }
 
   html[quick-edit='true'] .video-hero .video-source a {

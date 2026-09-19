@@ -19,8 +19,11 @@ export function selectPlayableVideo(sources, canPlayType) {
     webm: 'video/webm; codecs="vp9"',
     ogg: 'video/ogg; codecs="theora"',
   };
-  return sources.find((source) => {
-    const extension = new URL(source).pathname.split('.').at(-1).toLowerCase();
-    return types[extension] && !!canPlayType(types[extension]);
-  }) || null;
+  const selected = sources.find((source) => {
+    const url = typeof source === 'string' ? source : source.url;
+    const extension = new URL(url).pathname.split('.').at(-1).toLowerCase();
+    const type = typeof source === 'string' ? types[extension] : source.type;
+    return type && !!canPlayType(type);
+  });
+  return typeof selected === 'string' ? selected : selected?.url || null;
 }

@@ -11,11 +11,29 @@ export default function decorate(block, options = {}) {
   const rows = [...block.children];
   const links = [...block.querySelectorAll('a[href]')]
     .filter((a) => resolveVideoSource(a.getAttribute('href'), doc.location.href));
-  const [link] = links;
-  const sourceRow = link && rows.find((row) => row.contains(link));
+  const sourceRows = rows.filter((row) => links.some((link) => row.contains(link)));
+  const codecs = {
+    h264: 'video/mp4; codecs="avc1.64001f"',
+    vp9: 'video/mp4; codecs="vp09.00.31.08"',
+  };
+  const sources = links.map((link) => {
+    const row = sourceRows.find((item) => item.contains(link));
+    const url = resolveVideoSource(link.getAttribute('href'), doc.location.href);
+    if (row.children.length === 1) return url;
+    const codec = row.firstElementChild.textContent.toLowerCase().replace(/[^a-z0-9]/g, '');
+    return { url, type: codecs[codec] };
+  });
   const posterRow = rows.find((row) => row.querySelector('img'));
   const copyRow = rows.find((row) => row.querySelector('h1')) || rows.at(-1);
-  sourceRow?.classList.add('video-source');
+  if (sourceRows.length) {
+    const sourceGroup = doc.createElement('div');
+    sourceGroup.className = 'video-sources';
+    sourceRows[0].before(sourceGroup);
+    sourceRows.forEach((row) => {
+      row.classList.add('video-source');
+      sourceGroup.append(row);
+    });
+  }
   posterRow?.classList.add('video-poster');
   copyRow?.classList.add('video-copy');
   const poster = posterRow?.querySelector('img');
@@ -39,7 +57,7 @@ export default function decorate(block, options = {}) {
   if (authoring || !links.length || !poster) return;
   const probe = doc.createElement('video');
   const source = selectPlayableVideo(
-    links.map((a) => resolveVideoSource(a.getAttribute('href'), doc.location.href)),
+    sources,
     (type) => probe.canPlayType(type),
   );
   if (!source) {
