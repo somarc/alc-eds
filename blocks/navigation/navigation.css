@@ -54,12 +54,12 @@
     display: none;
   }
 
-  .navigation .nav-tools a[href*='/cart.html'] {
+  .navigation .nav-tools a:where([href*='/cart.html'], [data-demo-role='cart']) {
     display: inline-block;
     font-size: 0;
   }
 
-  .navigation .nav-tools a[href*='/cart.html']::after {
+  .navigation .nav-tools a:where([href*='/cart.html'], [data-demo-role='cart'])::after {
     content: '\e8cc';
     font: 1.5rem 'Material Icons', sans-serif;
   }
@@ -267,7 +267,7 @@
       white-space: nowrap;
     }
 
-    .navigation .nav-tools a[href*='/help-redirect']::before {
+    .navigation .nav-tools a:where([href*='/help-redirect'], [data-demo-role='help'])::before {
       content: '\e887';
       font-family: 'Material Icons', sans-serif;
       margin-inline-end: 0.25rem;

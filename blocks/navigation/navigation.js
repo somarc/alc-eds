@@ -47,7 +47,7 @@ export default function decorate(block) {
       const destination = search.querySelector('a');
       if (!destination) return;
       const url = new URL(destination.href);
-      url.searchParams.set('q', input.value);
+      if (destination.dataset.demoRouted !== 'true') url.searchParams.set('q', input.value);
       window.location.assign(url);
     };
     input.addEventListener('keydown', (event) => {
@@ -55,6 +55,8 @@ export default function decorate(block) {
     });
     search.querySelector('a')?.addEventListener('click', (event) => {
       if (doc.documentElement.getAttribute('quick-edit') === 'true') return;
+      const modified = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+      if (event.button !== 0 || modified) return;
       event.preventDefault();
       submit();
     });

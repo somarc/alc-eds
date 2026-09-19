@@ -1,6 +1,7 @@
 import {
   decorateSections, decorateBlocks, loadSections, loadHeader, loadFooter, loadCSS,
 } from './aem.js';
+import { routeDemoLinks } from './demo-routing.js';
 
 // Keep the boilerplate's Trusted Types boundary for DA's serialized HTML.
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
@@ -55,6 +56,11 @@ export async function loadPage(doc = document) {
   doc.documentElement.lang = 'en';
   const main = doc.querySelector('main');
   if (!main) return;
+  const isStory = doc.querySelector('meta[name="template"]')?.content === 'build-story';
+  if (isStory) {
+    doc.body.classList.add('build-story-page');
+    await loadCSS(`${window.hlx.codeBasePath}/styles/build-story.css`);
+  }
   main.id ||= 'main';
   main.tabIndex = -1;
   if (!doc.querySelector('body > .skip-link')) {
@@ -65,6 +71,13 @@ export async function loadPage(doc = document) {
     doc.body.prepend(skip);
   }
   decorateMain(main);
+  if (isStory) {
+    ['team', 'blueprint', 'qmd', 'proof', 'scale'].forEach((name) => {
+      const section = main.querySelector(`.story-${name}`);
+      if (section) section.id = name;
+    });
+  }
+  routeDemoLinks(main);
   doc.body.classList.add('appear');
   await Promise.all([
     loadSections(main),
@@ -75,13 +88,14 @@ export async function loadPage(doc = document) {
     doc.body.dataset.chromeLoaded = 'true';
     // The shared documents are independently editable, without recursive chrome.
     const isSharedDocument = main.querySelector('.navigation, .site-footer');
-    if (!isSharedDocument) {
+    if (!isSharedDocument && !isStory) {
       await Promise.all([
         doc.querySelector('body > header') && loadHeader(doc.querySelector('body > header')),
         doc.querySelector('body > footer') && loadFooter(doc.querySelector('body > footer')),
       ]);
     }
   }
+  routeDemoLinks(doc.body);
   doc.body.dataset.pageReady = 'true';
 }
 

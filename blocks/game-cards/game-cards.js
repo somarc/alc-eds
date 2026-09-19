@@ -8,6 +8,9 @@ export default function decorate(block) {
     row.classList.add('game-card');
     const [media, copy, overlay] = row.children;
     media?.classList.add('game-card-media');
+    if (media && block.classList.contains('engineering')) {
+      [...media.children].forEach((field, i) => ownField(field, i ? 'engineering-label' : 'engineering-value'));
+    }
     copy?.classList.add('game-card-copy');
     if (copy) {
       const fields = [...copy.children];

@@ -76,7 +76,7 @@
     font-weight: 700;
   }
 
-  .site-footer .footer-social a[href*='facebook'] {
+  .site-footer .footer-social a:where([href*='facebook'], [data-demo-role='facebook']) {
     display: inline-block;
     font-size: 0;
     inline-size: 1.625rem;
@@ -88,12 +88,12 @@
     margin-inline: 0.25rem;
   }
 
-  .site-footer .footer-social a[href*='facebook']::before {
+  .site-footer .footer-social a:where([href*='facebook'], [data-demo-role='facebook'])::before {
     content: 'f';
     font: 700 1.25rem / 1.625rem Arial, sans-serif;
   }
 
-  .site-footer .footer-social a[href*='instagram'] {
+  .site-footer .footer-social a:where([href*='instagram'], [data-demo-role='instagram']) {
     display: inline-block;
     font-size: 0;
     inline-size: 1.5rem;
@@ -104,7 +104,7 @@
     margin-inline: 0.25rem;
   }
 
-  .site-footer .footer-social a[href*='instagram']::before {
+  .site-footer .footer-social a:where([href*='instagram'], [data-demo-role='instagram'])::before {
     content: '';
     display: inline-block;
     inline-size: 0.625rem;

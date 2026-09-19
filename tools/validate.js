@@ -90,7 +90,7 @@ async function runMatrix(widths = [320, 375, 390, 767, 768, 991, 992, 1199, 1200
 }
 
 async function runMarkers(width = 1200, path = '/index') {
-  const frame = await renderAt(width);
+  const frame = await renderAt(width, path);
   const doc = frame.contentDocument;
   const win = frame.contentWindow;
   const source = await (await fetch(`${path}.plain.html`)).text();

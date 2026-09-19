@@ -1,73 +1,28 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-  <meta
-    http-equiv="Content-Security-Policy"
-    content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none';"
-    move-to-http-header="true"
-  >
-  <title>Page not found</title>
-  <script nonce="aem" type="text/javascript">
-    window.isErrorPage = true;
-    window.errorCode = '404';
-  </script>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta property="og:title" content="Page not found">
-  <script nonce="aem" src="/scripts/scripts.js" type="module"></script>
-  <script nonce="aem" type="module">
-    window.addEventListener('load', () => {
-      if (document.referrer) {
-        const { origin, pathname } = new URL(document.referrer);
-        if (origin === window.location.origin) {
-          const backBtn = document.createElement('a');
-          backBtn.classList.add('button', 'error-button-back');
-          backBtn.href = pathname;
-          backBtn.textContent = 'Go back';
-          backBtn.title = 'Go back';
-          const btnContainer = document.querySelector('.button-container');
-          btnContainer.append(backBtn);
-        }
-      }
-    });
-  </script>
-  <script nonce="aem" type="module">
-    import { sampleRUM } from '/scripts/aem.js';
-    sampleRUM('404', { source: document.referrer });
-  </script>
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none';" move-to-http-header="true">
+  <title>Explore the build story | ALC × EDS</title>
   <link rel="stylesheet" href="/styles/styles.css">
-  <style>
-    main.error {
-      min-height: calc(100vh - var(--nav-height));
-      display: flex;
-      align-items: center;
-    }
-
-    main.error .error-number {
-      width: 100%;
-    }
-
-    main.error .error-number text {
-      font-family: monospace;
-    }
-  </style>
-  <link rel="stylesheet" href="/styles/lazy-styles.css">
+  <link rel="stylesheet" href="/styles/fonts.css">
+  <script nonce="aem">
+    const story = '/how-we-built-this';
+    const path = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '');
+    const authoring = new URLSearchParams(window.location.search).has('quick-edit');
+    if (path !== story && !authoring) window.location.replace(story);
+  </script>
 </head>
-
 <body>
-  <header></header>
-  <main class="error">
+  <main>
     <div class="section">
-      <svg viewBox="1 0 38 18" class="error-number">
-        <text x="0" y="17">404</text>
-      </svg>
-      <h2 class="error-message">Page Not Found</h2>
-      <p class="button-container">
-        <a href="/" class="button secondary error-button-home">Go home</a>
-      </p>
+      <h1>This demo has a story to tell.</h1>
+      <p>Only the homepage presentation was migrated. Other destinations lead to the engineering story—not an imitation of a live lottery service.</p>
+      <p><a href="/how-we-built-this">Read how we built this site →</a></p>
+      <p><a href="/">← Return to the homepage</a></p>
     </div>
   </main>
-  <footer></footer>
 </body>
-
 </html>

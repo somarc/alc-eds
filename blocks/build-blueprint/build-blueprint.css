@@ -1,0 +1,104 @@
+@layer components {
+  .build-blueprint {
+    counter-reset: blueprint;
+  }
+
+  .build-blueprint .blueprint-step {
+    display: grid;
+    gap: 1.5rem;
+    padding-block: 2.5rem;
+    border-block-start: 1px solid var(--border-color);
+    counter-increment: blueprint;
+  }
+
+  .build-blueprint .blueprint-context,
+  .build-blueprint .blueprint-command {
+    min-inline-size: 0;
+  }
+
+  .build-blueprint .blueprint-context::before {
+    content: counter(blueprint, decimal-leading-zero);
+    display: grid;
+    place-items: center;
+    inline-size: 3rem;
+    block-size: 3rem;
+    margin-block-end: 1.25rem;
+    color: #fff;
+    background: var(--link-color);
+    border: 3px solid #e9f5fb;
+    border-radius: 50%;
+    font: 700 1.125rem var(--heading-font-family);
+  }
+
+  .build-blueprint h3 {
+    margin: 0 0 1rem;
+    color: var(--link-color);
+    font: 700 1.5rem / 1.2 var(--heading-font-family);
+  }
+
+  .build-blueprint .blueprint-context p {
+    margin-block: 0 1rem;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  .build-blueprint .blueprint-command {
+    position: relative;
+    align-self: start;
+    padding: 3.5rem 1.25rem 1.25rem;
+    color: #f5fbff;
+    background: #083c5a;
+    border: 1px solid #00529b;
+    border-radius: 0.625rem;
+    box-shadow: 0 3px 8px rgb(0 82 155 / 12%);
+  }
+
+  .build-blueprint pre {
+    margin: 0;
+    font: 0.8125rem / 1.65 ui-monospace, SFMono-Regular, Consolas, monospace;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    tab-size: 2;
+  }
+
+  .build-blueprint code {
+    font: inherit;
+  }
+
+  .build-blueprint .blueprint-command p {
+    margin: 1.25rem 0 0;
+    padding-block-start: 1rem;
+    border-block-start: 1px solid rgb(255 255 255 / 20%);
+    color: #d5e9f5;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  .build-blueprint .blueprint-copy {
+    position: absolute;
+    inset: 0.75rem 0.75rem auto auto;
+    min-block-size: 2rem;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid rgb(255 255 255 / 40%);
+    border-radius: 1.25rem;
+    color: #fff;
+    background: transparent;
+    font-size: 0.75rem;
+  }
+
+  .build-blueprint .blueprint-copy:hover {
+    background: rgb(255 255 255 / 12%);
+  }
+
+  html[quick-edit='true'] .build-blueprint .blueprint-copy {
+    display: none;
+  }
+
+  @media (width >= 62em) {
+    .build-blueprint .blueprint-step {
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+      gap: 2.5rem;
+      padding-block: 3rem;
+    }
+  }
+}

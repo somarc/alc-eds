@@ -1,0 +1,214 @@
+@layer layout {
+  .build-story-page {
+    background: #fff;
+    color: #4e5b68;
+  }
+
+  .build-story-page main > .section {
+    inline-size: min(100%, 72.5rem);
+    padding: clamp(2.5rem, 5vw, 4.5rem) 1.25rem;
+    scroll-margin-block-start: 5.5rem;
+  }
+
+  .build-story-page main > .story-masthead {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 30;
+    inline-size: 100%;
+    padding-block: 0.75rem;
+    background: #fff;
+    border-block-end: 1px solid var(--border-color);
+    box-shadow: 0 3px 8px rgb(0 82 155 / 8%);
+  }
+
+  .build-story-page .story-masthead > .columns-wrapper {
+    max-inline-size: 70rem;
+    margin-inline: auto;
+  }
+
+  .build-story-page main > .story-cover {
+    inline-size: 100%;
+    padding-block: clamp(3rem, 7vw, 6.5rem);
+    color: #fff;
+    background: var(--link-color);
+    border-block-end: 0.625rem solid var(--green);
+  }
+
+  .build-story-page .story-cover > .default-content-wrapper,
+  .build-story-page .story-outro > .default-content-wrapper {
+    max-inline-size: 70rem;
+    margin-inline: auto;
+  }
+
+  .build-story-page .story-cover h1 {
+    max-inline-size: 19ch;
+    margin-block: 1.25rem 1.75rem;
+    color: #fff;
+    font: 700 clamp(2.75rem, 6.2vw, 5.75rem) / 1.05 var(--heading-font-family);
+    letter-spacing: -0.045em;
+  }
+
+  .build-story-page .story-cover p {
+    max-inline-size: 63ch;
+    margin-block: 0 1rem;
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    line-height: 1.5;
+  }
+
+  .build-story-page .story-cover strong {
+    font-family: var(--heading-font-family);
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+  }
+
+  .build-story-page .story-outro > :where(.default-content-wrapper) a {
+    color: #fff;
+  }
+
+  .build-story-page .story-cover a,
+  .build-story-page .story-outro strong a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 3rem;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #fff;
+    border-radius: 2rem;
+    background: #fff;
+    color: var(--link-color);
+    font: 500 1rem / 1.25 var(--heading-font-family);
+    letter-spacing: 0;
+  }
+
+  .build-story-page .story-cover em {
+    color: #d6edfb;
+    font-size: 0.8125rem;
+    font-style: normal;
+  }
+
+  .build-story-page main > .story-nav {
+    padding-block: 1rem;
+    border-block-end: 1px solid var(--border-color);
+  }
+
+  .build-story-page .story-section > .default-content-wrapper h2 {
+    max-inline-size: 26ch;
+    margin-block: 0 1.25rem;
+    color: var(--link-color);
+    font: 700 clamp(1.75rem, 3.5vw, 2.75rem) / 1.15 var(--heading-font-family);
+    letter-spacing: -0.025em;
+  }
+
+  .build-story-page .story-section > :where(.default-content-wrapper) p {
+    max-inline-size: 76ch;
+    margin-block: 0 1.5rem;
+    font-size: 1.125rem;
+    line-height: 1.65;
+  }
+
+  .build-story-page .story-section > .default-content-wrapper em {
+    font-size: 0.8125rem;
+    font-style: normal;
+    color: #69727b;
+  }
+
+  .build-story-page .story-metrics > .columns-wrapper,
+  .build-story-page .story-team > .columns-wrapper,
+  .build-story-page .story-lessons > .columns-wrapper,
+  .build-story-page .story-proof > .columns-wrapper {
+    margin-block: 2rem;
+  }
+
+  .build-story-page main > .story-principle {
+    background: #f4f7e5;
+    border-block: 1px solid #e3e9c5;
+  }
+
+  .build-story-page .story-principle blockquote {
+    margin: 1.5rem 0 2rem;
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    border-inline-start: 5px solid var(--green);
+  }
+
+  .build-story-page .story-principle blockquote p {
+    color: #4b5410;
+    font: 500 clamp(1.5rem, 3vw, 2.25rem) / 1.3 var(--heading-font-family);
+  }
+
+  .build-story-page main > .story-opportunities {
+    display: grid;
+    gap: 1.5rem 0;
+    padding-inline: 0;
+    background: #f2f4f5;
+    border-block: 1px solid var(--border-color);
+  }
+
+  .build-story-page .story-opportunities > .default-content-wrapper {
+    grid-column: 1 / -1;
+    padding-inline: 1.25rem;
+  }
+
+  .build-story-page .story-opportunities > .game-cards-wrapper,
+  .build-story-page .story-opportunities > .columns-wrapper {
+    min-inline-size: 0;
+  }
+
+  .build-story-page .story-opportunities > .columns-wrapper {
+    margin-inline: 0.625rem;
+  }
+
+  .build-story-page main > .story-qmd {
+    background: #eaf5fb;
+    border-block: 1px solid #cfe5f2;
+  }
+
+  .build-story-page .story-qmd > .columns-wrapper {
+    margin-block: 2rem;
+  }
+
+  .build-story-page .story-qmd pre {
+    overflow: auto;
+    margin-block: 1.25rem;
+    padding: 1.25rem;
+    background: #083c5a;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+  }
+
+  .build-story-page main > .story-proof {
+    background: #f2f4f5;
+  }
+
+  .build-story-page main > .story-scale {
+    border-block-start: 1px solid var(--border-color);
+  }
+
+  .build-story-page main > .story-outro {
+    inline-size: 100%;
+    padding-block: clamp(3rem, 6vw, 5rem);
+    background: var(--link-color);
+    color: #fff;
+    border-block-start: 0.625rem solid var(--green);
+  }
+
+  .build-story-page .story-outro > .default-content-wrapper h2 {
+    color: #fff;
+    font-size: clamp(2.25rem, 5vw, 4rem);
+  }
+
+  .build-story-page .story-outro > .default-content-wrapper em {
+    color: #d6edfb;
+  }
+
+  @media (width >= 75em) {
+    .build-story-page main > .story-opportunities {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  .build-story-page .story-cover a:hover,
+  .build-story-page .story-outro strong a:hover {
+    background: #e8f5fd;
+    text-decoration: none;
+  }
+}
