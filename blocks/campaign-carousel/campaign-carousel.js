@@ -8,8 +8,10 @@ export default function decorate(block) {
     slide.classList.add('campaign-slide');
     decorateRenditions(slide);
     slide.querySelectorAll('img').forEach((img) => {
-      img.loading = i === 0 ? 'eager' : 'lazy';
-      if (i === 0) img.setAttribute('fetchpriority', 'high');
+      const rendition = img.closest('.rendition');
+      const visible = rendition && getComputedStyle(rendition).display !== 'none';
+      img.loading = i === 0 && visible ? 'eager' : 'lazy';
+      if (i === 0 && visible) img.setAttribute('fetchpriority', 'high');
     });
   });
   addCarousel(block, slides, 'campaign');

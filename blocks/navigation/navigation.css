@@ -292,6 +292,8 @@
 
     .navigation .navigation-title {
       text-align: center;
+      padding-inline: 0.25rem;
+      white-space: nowrap;
     }
 
     .navigation .navigation-submenu {
@@ -304,6 +306,18 @@
 
     .navigation .navigation-submenu ul {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .navigation .has-submenu .navigation-title {
+      padding-inline-end: 1.5rem;
+    }
+
+    .navigation .has-compact .nav-brand-wide {
+      display: block;
+    }
+
+    .navigation .nav-brand-compact {
+      display: none;
     }
   }
 
@@ -328,5 +342,15 @@
 
   html[quick-edit='true'] .navigation .nav-search a {
     font-size: 0.75rem;
+  }
+
+  .navigation .has-compact .nav-brand-wide {
+    display: none;
+  }
+
+  .navigation .nav-brand-compact img {
+    inline-size: 5.3125rem;
+    block-size: 3.4375rem;
+    object-fit: contain;
   }
 }

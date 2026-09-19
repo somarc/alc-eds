@@ -1,8 +1,10 @@
 import { ownField } from '../../scripts/media-fields.js';
+import addCarousel from '../../scripts/carousel.js';
 
 export default function decorate(block) {
   if (block.dataset.decorated) return;
-  [...block.children].forEach((row) => {
+  const cards = [...block.children];
+  cards.forEach((row) => {
     row.classList.add('game-card');
     const [media, copy, overlay] = row.children;
     media?.classList.add('game-card-media');
@@ -27,5 +29,7 @@ export default function decorate(block) {
       media?.append(overlay);
     }
   });
+  // CSS owns mobile-carousel/desktop-grid visibility; no resize listener or hidden desktop cards.
+  addCarousel(block, cards, 'featured game', { hideInactive: false });
   block.dataset.decorated = 'true';
 }

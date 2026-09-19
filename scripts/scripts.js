@@ -37,6 +37,9 @@ function prepareMetadata(main) {
     metadata.remove();
     if (!section.children.length) section.remove();
   });
+  const last = main.lastElementChild;
+  // EDS can leave an empty trailing section after lifting the document Metadata table.
+  if (last?.tagName === 'DIV' && !last.children.length && !last.textContent.trim()) last.remove();
 }
 
 export function decorateMain(main) {
@@ -81,4 +84,5 @@ if (['on', 'true'].includes(params.get('quick-edit'))) {
   const { default: loadQuickEdit } = await import('https://da.live/nx/public/plugins/quick-edit/quick-edit.js');
   await loadQuickEdit(undefined, loadPage);
 }
-await loadPage();
+// Do not top-level-await this: the shared fragment imports decorateMain from this module.
+loadPage();

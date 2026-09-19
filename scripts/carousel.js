@@ -1,5 +1,5 @@
 /** Shared manual controls; no clones, autoplay, global listeners or stale timers. */
-export default function addCarousel(block, slides, label) {
+export default function addCarousel(block, slides, label, { hideInactive = true } = {}) {
   if (!slides.length || block.querySelector(':scope > .carousel-controls')) return;
   const doc = block.ownerDocument;
   const controls = doc.createElement('div');
@@ -10,7 +10,10 @@ export default function addCarousel(block, slides, label) {
   let selected = 0;
   const select = (index) => {
     selected = (index + slides.length) % slides.length;
-    slides.forEach((slide, i) => { slide.hidden = i !== selected; });
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('is-selected', i === selected);
+      if (hideInactive) slide.hidden = i !== selected;
+    });
     buttons.forEach((button, i) => button.setAttribute('aria-pressed', i === selected));
     block.dataset.selectedSlide = String(selected);
   };

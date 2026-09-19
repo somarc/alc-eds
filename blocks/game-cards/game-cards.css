@@ -2,6 +2,7 @@
   .game-cards {
     display: grid;
     gap: 1.6875rem 1.25rem;
+    padding-inline: 0.625rem;
   }
 
   .game-cards .game-card {
@@ -171,6 +172,8 @@
   @media (width >= 48em) {
     .game-cards {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding-inline: 1.25rem;
+      padding-block-end: 1.6875rem;
     }
   }
 
@@ -192,5 +195,87 @@
 
   html[quick-edit='true'] .game-cards .new-flag p {
     font-size: 1rem;
+  }
+
+  .game-cards .carousel-controls {
+    display: none;
+  }
+
+  @media (width < 48em) {
+    .game-cards {
+      display: block;
+      position: relative;
+      block-size: 30.9375rem;
+    }
+
+    .game-cards .game-card:not(.is-selected) {
+      display: none;
+    }
+
+    .game-cards .game-card-copy {
+      padding-inline: 1.875rem;
+    }
+
+    .game-cards .game-card-action {
+      inset-inline: 1.875rem;
+    }
+
+    .game-cards .carousel-controls {
+      display: flex;
+      position: absolute;
+      inset: auto 0 5px;
+      align-items: center;
+      justify-content: space-between;
+      inset-block-end: 0;
+      block-size: 1.875rem;
+    }
+
+    .game-cards .carousel-controls button {
+      background: transparent;
+      border: 0;
+      min-inline-size: 2.75rem;
+      min-block-size: 2.75rem;
+      color: var(--blue);
+    }
+
+    .game-cards :is(.carousel-previous, .carousel-next)::before {
+      content: '\e314';
+      font: 1.75rem 'Material Icons', sans-serif;
+    }
+
+    .game-cards .carousel-next::before {
+      content: '\e315';
+    }
+
+    .game-cards .carousel-dots {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .game-cards .carousel-dot {
+      font-size: 0;
+      position: relative;
+      min-inline-size: 1.75rem;
+    }
+
+    .game-cards .carousel-dot::after {
+      content: '';
+      position: absolute;
+      inset: 50% auto auto 50%;
+      translate: -50% -50%;
+      inline-size: 10px;
+      block-size: 10px;
+      background: #69727b;
+      border-radius: 50%;
+    }
+
+    .game-cards .carousel-dot[aria-pressed='true']::after {
+      background: var(--blue);
+    }
+
+    .game-cards .carousel-controls .carousel-dot {
+      min-inline-size: 1.5rem;
+    }
   }
 }

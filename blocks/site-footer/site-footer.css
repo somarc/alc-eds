@@ -178,6 +178,10 @@
     padding: 1.5rem 0.625rem 1rem;
     text-align: center;
     font-size: 0.75rem;
+    display: grid;
+    gap: 0.625rem;
+    grid-template-areas: 'partners' 'policies' 'certifications' 'copyright' 'notice';
+    padding-block-start: 0;
   }
 
   .site-footer .footer-legal h3 {
@@ -201,7 +205,9 @@
 
   .site-footer .footer-legal-links {
     margin-block: 1rem;
-    font-size: 0.625rem;
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 800;
   }
 
   .site-footer .footer-preview-notice {
@@ -209,6 +215,8 @@
     border-block-start: 1px solid var(--border-color);
     margin-block-start: 1rem;
     color: #4e5b68;
+    grid-area: notice;
+    text-align: center;
   }
 
   @media (width >= 48em) {
@@ -225,6 +233,7 @@
   @media (width >= 75em) {
     .site-footer .footer-subscribe {
       grid-template-columns: 7fr 5fr;
+      min-block-size: 6.1777rem;
     }
 
     .site-footer .footer-subscribe p {
@@ -242,6 +251,7 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 1.25rem;
       padding-block: 1.5rem;
+      padding: 0.625rem 1.25rem 0;
     }
 
     .site-footer .footer-column {
@@ -258,7 +268,65 @@
     }
 
     .site-footer .footer-column-content {
-      padding: 0.25rem 0;
+      padding: 6px 0 0;
     }
+
+    .site-footer .footer-column-content :is(li, p) {
+      margin: 4px 0;
+    }
+
+    .site-footer .footer-legal {
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas: 'partners partners' 'policies certifications' 'copyright certifications' 'notice notice';
+      text-align: start;
+    }
+
+    .site-footer .footer-partners {
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+      min-block-size: 4.75rem;
+    }
+
+    .site-footer .footer-partners h3 {
+      margin: 0;
+    }
+
+    .site-footer .footer-partners p {
+      margin: 0;
+    }
+
+    .site-footer .footer-certifications img {
+      max-block-size: 4.125rem;
+    }
+  }
+
+  .site-footer .footer-partners {
+    grid-area: partners;
+  }
+
+  .site-footer .footer-policies {
+    grid-area: policies;
+  }
+
+  .site-footer .footer-certifications {
+    grid-area: certifications;
+  }
+
+  .site-footer .footer-copyright {
+    grid-area: copyright;
+  }
+
+  .site-footer .footer-partners .footer-legal-logos img {
+    block-size: 3.1875rem;
+  }
+
+  .site-footer .footer-copyright p {
+    margin: 0;
+    font-size: 0.75rem;
+  }
+
+  .site-footer .footer-legal-copy {
+    margin: 0;
   }
 }

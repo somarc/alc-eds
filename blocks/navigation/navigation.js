@@ -7,6 +7,18 @@ export default function decorate(block) {
   if (!top || !menu) return;
   top.classList.add('navigation-top');
   [...top.children].forEach((cell, i) => cell.classList.add(['nav-brand', 'nav-search', 'nav-tools', 'nav-account'][i] || 'nav-extra'));
+  const brand = top.querySelector('.nav-brand');
+  // aem.js can wrap two delivered image-only pictures in one unmarked paragraph.
+  // Canvas retains the two authored, marked paragraphs; never unwrap those.
+  const generated = brand?.firstElementChild;
+  if (generated?.tagName === 'P' && !generated.hasAttribute('data-prose-index')
+    && !generated.textContent.trim() && generated.querySelectorAll('img').length === 2) {
+    generated.replaceWith(...generated.children);
+  }
+  if (brand?.children.length === 2) {
+    brand.classList.add('has-compact');
+    [...brand.children].forEach((field, i) => ownField(field, i ? 'nav-brand-compact' : 'nav-brand-wide'));
+  }
   menu.classList.add('navigation-menu');
   const shell = doc.createElement('div');
   shell.className = 'navigation-bar';
@@ -52,6 +64,7 @@ export default function decorate(block) {
     const [title, ...fields] = cell.children;
     if (title) ownField(title, 'navigation-title');
     if (!fields.length) return;
+    cell.classList.add('has-submenu');
     const submenu = doc.createElement('div');
     submenu.className = 'navigation-submenu';
     submenu.append(...fields);

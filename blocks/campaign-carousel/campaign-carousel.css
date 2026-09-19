@@ -33,7 +33,7 @@
     max-inline-size: none;
     block-size: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: center bottom;
   }
 
   .campaign-carousel .media-action {
@@ -147,5 +147,11 @@
 
   html[quick-edit='true'] .campaign-carousel .media-action a {
     font-size: 0.875rem;
+  }
+
+  @media (width < 22em) {
+    .campaign-carousel .carousel-controls .carousel-dot {
+      min-inline-size: 2.5rem;
+    }
   }
 }

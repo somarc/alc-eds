@@ -59,7 +59,7 @@ def block(name, rows):
     return f'<div class="{name}">' + ''.join('<div>' + ''.join(f'<div>{c}</div>' for c in row) + '</div>' for row in rows) + '</div>'
 
 def section(contents, style=''):
-    metadata = block('section-metadata', [['style', style]]) if style else ''
+    metadata = block('section-metadata', [['style', ', '.join(style.split())]]) if style else ''
     return f'<div>{contents}{metadata}</div>'
 
 def document(contents, title, description, snapshot):
@@ -75,17 +75,19 @@ def campaign_row(el, name):
     a = el.find('a', href=True) if el.name != 'a' else el
     return [image(renditions.get(f'(min-width: {w}px)', ''), name) for w in [1200, 768, 320]] + [paragraph('') if not a else '<p>' + link(name, a['href']) + '</p>']
 
-def convert(source, output, snapshot):
+def convert(source, output, snapshot, duplicate_winner_logo_url=None):
     soup = BeautifulSoup(source.read_text(), 'html.parser')
     home = []
     mobile = soup.select_one('article.html-promo-full-link')
     if mobile:
-        home.append(section(block('promo-rail mobile-banner', [campaign_row(mobile, 'Winning numbers')]), 'full-bleed mobile-only'))
+        mobile_row = campaign_row(mobile, 'Winning numbers')
+        home.append(section(block('promo-rail mobile-banner', [[mobile_row[2], mobile_row[3]]]), 'full-bleed mobile-only'))
     slides = soup.select('article.fca-carousel-slide-promo')
     assert len(slides) == 5, 'Source carousel changed: review the content model.'
     home.append(section(block('campaign-carousel', [campaign_row(s, s.get('data-gtm-name', 'Campaign')) for s in slides]), 'full-bleed'))
     home.append(section('<h2>Recent winners</h2>', 'title-band blue'))
     winners = []
+    seen_logos = set()
     for item in soup.select('.winners-carousel-slides > .slide'):
         info = item.select_one('.winner-info')
         name = text(info.select_one('h3'))
@@ -93,7 +95,13 @@ def convert(source, output, snapshot):
         a = info.find('a', href=True)
         bio += '<p><strong>' + link(text(a), a['href']) + '</strong></p>'
         logo = item.select_one('.winning-game-logo')
-        game = image(logo['src'], logo.get('alt', 'Winning game')) + paragraph(text(item.select_one('.winning-game-ribbon')))
+        logo_source = logo['src']
+        if logo_source in seen_logos:
+            if not duplicate_winner_logo_url:
+                raise ValueError('Repeated winner logo: supply --duplicate-winner-logo-url with a separately uploaded DA asset path for independent Canvas replacement.')
+            logo_source = duplicate_winner_logo_url
+        seen_logos.add(logo['src'])
+        game = image(logo_source, logo.get('alt', 'Winning game')) + paragraph(text(item.select_one('.winning-game-ribbon')))
         amount = re.sub(r'\D', '', text(item.select_one('.prize-amount')))
         groups = f'{int(amount):,}'.split(',')
         prize = '<p>' + ' '.join('<strong>' + ('$' if i == 0 else '') + g + '</strong>' for i, g in enumerate(groups)) + '</p>'
@@ -135,7 +143,7 @@ def convert(source, output, snapshot):
     home.append(section(block('game-cards', cards) + block('promo-rail', rail), 'featured-layout'))
 
     # Four columns in the top row, four primary navigation cells in the second.
-    top = [image('/content/dam/alc/images/static/game-tiles/ALC-header-logo-en.png', 'Atlantic Lottery'),
+    top = [image('/content/dam/alc/images/static/game-tiles/ALC-header-logo-en.png', 'Atlantic Lottery') + image('/content/dam/alc/images/static/game-tiles/ALC-header-logo-bug.png', 'Atlantic Lottery symbol'),
            '<p>' + link('Search', '/content/alc/en/search-results.html') + '</p>',
            '<p>' + link('Français', '/content/alc/fr.html') + ' ' + link('Help', '/content/alc/en/referenced-content/external/help-redirect.html') + ' ' + link('Create Account', '/content/alc/en/registration/register-account.html') + ' ' + link('Shopping Cart', '/content/alc/en/cart.html') + '</p>',
            '<p>' + link('Sign In', '/content/alc/en.html') + '</p>']
@@ -183,18 +191,22 @@ def convert(source, output, snapshot):
         groups.append(h + clean(group.find('ul')))
     assert len(groups) == 4
     misc = footer.select_one('.misc')
-    legal = ''
-    for child in misc.select('h3,p'):
-        legal += clean(child)
+    policies = ''.join(clean(p) for p in misc.select('p') if p.find('a'))
+    copy_fields = []
+    for p in misc.select('p'):
+        value = text(p)
+        if value.startswith(('You must be 19+', '© Copyright')) and value not in copy_fields:
+            copy_fields.append(value)
     # Partner and certification art are source images; always remain DA-authored.
-    partners = '<p>' + ' '.join('<a href="'+esc(absolute(a['href']))+'">'+clean(a.find('img'))+'</a>' for a in misc.select('.other-sites a')) + '</p>'
+    partners = clean(misc.select_one('.other-sites h3')) + '<p>' + ' '.join('<a href="'+esc(absolute(a['href']))+'">'+clean(a.find('img'))+'</a>' for a in misc.select('.other-sites a')) + '</p>'
     certs = '<p>' + ''.join(clean(im) for im in misc.select('img') if 'logo-rgcheck' in im.get('src','') or 'logo-wla' in im.get('src','')) + '</p>'
-    legal = partners + legal + certs
-    legal += paragraph(f'Migration preview · Source snapshot {snapshot}. Not the official Atlantic Lottery site. Draws and prizes are dated reference content, not live results. Account, play, search and subscription links continue on alc.ca; no account or payment data is collected here.')
+    copyright_copy = ''.join(paragraph(value) for value in copy_fields)
+    copyright_copy += paragraph(f'Migration preview · Source snapshot {snapshot}. Not the official Atlantic Lottery site. Draws and prizes are dated reference content, not live results. Account, play, search and subscription links continue on alc.ca; no account or payment data is collected here.')
+    legal = [partners, policies, certs, copyright_copy]
     documents = {
         'index.html': document(''.join(home), text(soup.title), soup.select_one('meta[name="description"]').get('content',''), snapshot),
         'nav.html': document(section(block('navigation', [top, nav]), 'full-bleed'), 'Navigation', 'ALC migration shared navigation.', snapshot),
-        'footer.html': document(section(block('site-footer', [newsletter, social, groups, [legal]]), 'full-bleed'), 'Footer', 'ALC migration shared footer.', snapshot),
+        'footer.html': document(section(block('site-footer', [newsletter, social, groups, legal]), 'full-bleed'), 'Footer', 'ALC migration shared footer.', snapshot),
     }
     for name, contents in documents.items():
         (output / name).write_text(contents)
@@ -205,10 +217,11 @@ if __name__ == '__main__':
     parser.add_argument('source', type=Path)
     parser.add_argument('output', type=Path)
     parser.add_argument('--snapshot', required=True)
+    parser.add_argument('--duplicate-winner-logo-url')
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[1]
     target = args.output.resolve()
     if target.is_relative_to(repo):
         parser.error('DA content belongs in the external operational workspace, not Git.')
     target.mkdir(parents=True, exist_ok=True)
-    print(json.dumps(convert(args.source, target, args.snapshot), indent=2))
+    print(json.dumps(convert(args.source, target, args.snapshot, args.duplicate_winner_logo_url), indent=2))

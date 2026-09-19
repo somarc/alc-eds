@@ -121,17 +121,21 @@
 
   .winners .winner-prize p {
     margin: 0;
+    display: flex;
+    gap: 2px;
   }
 
   .winners .winner-prize strong {
     position: relative;
     display: inline-block;
-    padding: 0.5rem 0.4rem 0.25rem;
     border: 1px solid #eee;
     border-radius: 4px;
-    font-weight: 700;
     background: linear-gradient(#fff 49%, #d1d1d1 50%, #eee 51%, #fff 52%);
-    box-shadow: 0 3px 1px rgb(0 82 155 / 25%);
+    font-weight: 800;
+    line-height: 1;
+    padding: 9px 5px 0;
+    border-color: var(--border-color);
+    box-shadow: none;
   }
 
   .winners .carousel-controls {
@@ -212,6 +216,7 @@
       justify-items: start;
       block-size: 15.3125rem;
       padding: 1.25rem 1.25rem 2.5rem;
+      padding-inline: 0.625rem;
     }
 
     .winners .winner-slide::before {
@@ -243,12 +248,17 @@
     .winners .winner-portrait {
       grid-row: 1 / 3;
       margin: 1.5625rem 0 0 1.25rem;
+      position: relative;
+      inset-inline-start: 1.25rem;
+      justify-self: center;
+      margin-inline: 0;
     }
 
     .winners .winner-bio {
       grid-row: 1 / 3;
-      margin-inline-start: 1.5625rem;
       text-align: start;
+      margin-inline-start: 2.1875rem;
+      inline-size: calc(100% - 2.8125rem);
     }
 
     .winners .winner-action a {
@@ -262,7 +272,22 @@
     .winners .winner-prize {
       grid-column: 3;
       font-size: 2.5rem;
-      margin-inline-start: 1.25rem;
+      margin-inline-start: 1.5625rem;
+      align-self: start;
+    }
+
+    .winners .winner-prize strong {
+      line-height: 1.625rem;
+      padding: 14px 8px 5px;
+    }
+
+    .winners .winner-prize strong:first-child::first-letter {
+      font-size: 1.125rem;
+    }
+
+    .winners .winner-logo {
+      inline-size: 3.375rem;
+      block-size: 3.375rem;
     }
   }
 
@@ -279,14 +304,126 @@
 
     .winners .winner-game {
       margin-top: 0;
+      margin-block-start: 0.9375rem;
+      inline-size: 17.3125rem;
     }
 
     .winners .winner-logo {
+      inline-size: 5rem;
       block-size: 5rem;
     }
 
     .winners .winner-prize {
       font-size: 4.5rem;
+      margin-inline-start: 2.5rem;
+    }
+
+    .winners .winner-prize strong {
+      line-height: 3.625rem;
+      padding: 12px 8px 0;
+    }
+
+    .winners .winner-prize strong:first-child::first-letter {
+      font-size: 1.875rem;
+    }
+
+    .winners .winner-ribbon {
+      inset: 1.25rem 1.25rem auto 2.5rem;
+      font-size: 1.5rem;
+      line-height: 1.4286;
+      padding-inline: 6.875rem 1.5625rem;
+    }
+  }
+
+  .winners .winner-prize strong:first-child::first-letter {
+    font-size: 0.9375rem;
+  }
+
+  .winners .province-pe {
+    --province-map: url('../../icons/province-pe.png');
+  }
+
+  .winners .province-ns {
+    --province-map: url('../../icons/province-ns.png');
+  }
+
+  .winners .province-nl {
+    --province-map: url('../../icons/province-nl.png');
+  }
+
+  .winners .province-nb {
+    --province-map: url('../../icons/province-nb.png');
+  }
+
+  @media (width < 48em) {
+    .winners .winner-slide {
+      padding: 1.25rem 1.25rem 0.9375rem;
+    }
+
+    .winners .winner-slide::before {
+      content: '';
+      position: absolute;
+      inset: 6.25rem auto auto 0;
+      inline-size: 15.625rem;
+      block-size: 11.3125rem;
+      background: var(--province-map) no-repeat top left / contain;
+      pointer-events: none;
+    }
+
+    .winners .winner-bio {
+      inline-size: 100%;
+      margin-block-start: 1.25rem;
+    }
+
+    .winners .winner-bio h3 {
+      margin-block-start: 0;
+    }
+
+    .winners .winner-location p {
+      line-height: 1.13;
+      margin: 0;
+    }
+
+    .winners .winner-action p {
+      margin: 0;
+    }
+
+    .winners .winner-action a {
+      margin-block: 0;
+      inset-block-start: 0.625rem;
+    }
+
+    .winners .winner-game {
+      margin-block-start: 0;
+      inset-block-start: 1.8125rem;
+      inline-size: 14.588rem;
+      block-size: 2.723rem;
+    }
+
+    .winners .winner-logo {
+      inline-size: 3.375rem;
+      block-size: 3.375rem;
+    }
+
+    .winners .winner-ribbon {
+      inset: 0.9375rem 1.25rem auto 0.625rem;
+      padding-inline: 6.875rem 1.5625rem;
+      font-size: 1.25rem;
+      line-height: 1.4286;
+    }
+
+    .winners .winner-prize {
+      inset-block-start: 1.8125rem;
+      min-block-size: 4.196rem;
+    }
+
+    .winners .winner-prize strong {
+      font-size: 2.1875rem;
+      line-height: 1.625rem;
+    }
+
+    .winners .carousel-dots {
+      display: none;
     }
   }
 }

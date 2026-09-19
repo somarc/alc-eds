@@ -31,12 +31,14 @@ export default function decorate(block) {
     });
   }
   if (legal) {
+    [...legal.children].forEach((cell, i) => cell.classList.add(['footer-partners', 'footer-policies', 'footer-certifications', 'footer-copyright'][i] || 'footer-extra'));
     [...legal.querySelectorAll(':scope > div > p, :scope > div > h3')].forEach((field) => {
       let role = 'footer-legal-copy';
       if (field.querySelector('img')) role = 'footer-legal-logos';
       else if (field.querySelector('a')) role = 'footer-legal-links';
       else if (field.textContent.startsWith('Migration preview')) role = 'footer-preview-notice';
-      ownField(field, role);
+      const owner = ownField(field, role);
+      if (role === 'footer-preview-notice') legal.append(owner);
     });
   }
   block.dataset.decorated = 'true';
