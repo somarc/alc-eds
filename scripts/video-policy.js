@@ -12,3 +12,15 @@ export function resolveVideoSource(value, baseURL) {
     return null;
   }
 }
+
+export function selectPlayableVideo(sources, canPlayType) {
+  const types = {
+    mp4: 'video/mp4; codecs="avc1.64001f"',
+    webm: 'video/webm; codecs="vp9"',
+    ogg: 'video/ogg; codecs="theora"',
+  };
+  return sources.find((source) => {
+    const extension = new URL(source).pathname.split('.').at(-1).toLowerCase();
+    return types[extension] && !!canPlayType(types[extension]);
+  }) || null;
+}

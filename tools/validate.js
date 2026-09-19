@@ -140,6 +140,7 @@ async function runMarkers(width = 1200, path = '/index') {
   before.repeatProsePreserved = fields.every((e) => main.contains(e));
   before.repeatBlockCount = main.querySelectorAll('[data-block-index]').length;
   const cardBefore = main.querySelector('.game-card-copy')?.getBoundingClientRect().height;
+  const heroBefore = main.querySelector('.video-hero')?.getBoundingClientRect().height;
   fields.forEach((field) => {
     const owner = doc.createElement('div');
     owner.className = 'prosemirror-editor';
@@ -157,6 +158,7 @@ async function runMarkers(width = 1200, path = '/index') {
     field.replaceWith(owner);
   });
   const cardAfter = main.querySelector('.game-card-copy')?.getBoundingClientRect().height;
+  const heroAfter = main.querySelector('.video-hero')?.getBoundingClientRect().height;
   const editors = [...main.querySelectorAll('.prosemirror-editor')];
   return report({
     ...before,
@@ -164,9 +166,163 @@ async function runMarkers(width = 1200, path = '/index') {
     cardHeightBefore: cardBefore,
     cardHeightAfter: cardAfter,
     cardGeometryPreserved: cardBefore === cardAfter,
+    heroGeometryPreserved: heroBefore === heroAfter,
+    heroHeightBefore: heroBefore,
+    heroHeightAfter: heroAfter,
+    noAuthoringVideo: !main.querySelector('.video-hero video'),
     overflowAfterMount: doc.documentElement.scrollWidth > doc.documentElement.clientWidth,
     caveat: 'Wrapper simulation only. Real Canvas typing, canonical persistence, selection and refresh require separate testing.',
   });
+}
+
+async function runVideoMatrix(widths = [320, 390, 768, 1200, 1440]) {
+  const results = [];
+  for (let index = 0; index < widths.length; index += 1) {
+    const width = widths[index];
+    // eslint-disable-next-line no-await-in-loop
+    const frame = await renderAt(width, '/how-we-built-this');
+    frame.scrollIntoView({ block: 'start' });
+    const doc = frame.contentDocument;
+    const hero = doc.querySelector('.video-hero');
+    const { height } = hero.getBoundingClientRect();
+    for (let i = 0; i < 100 && hero.dataset.playback !== 'playing'; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await wait(50);
+    }
+    const video = hero.querySelector('video');
+    results.push({
+      width,
+      pageVisible: !doc.hidden,
+      reducedMotion: frame.contentWindow.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      saveData: !!frame.contentWindow.navigator.connection?.saveData,
+      overflow: doc.documentElement.scrollWidth > doc.documentElement.clientWidth,
+      heroWidth: hero.getBoundingClientRect().width,
+      clientWidth: doc.documentElement.clientWidth,
+      heightBefore: height,
+      heightAfter: hero.getBoundingClientRect().height,
+      posterLoaded: hero.querySelector('img').naturalWidth > 0,
+      playback: hero.dataset.playback,
+      format: hero.dataset.videoFormat,
+      mediaError: hero.dataset.videoError,
+      currentTime: video?.currentTime,
+      muted: video?.muted,
+      loop: video?.loop,
+      inline: video?.playsInline,
+      source: hero.querySelector('.video-source a').getAttribute('href'),
+      selectedSource: video?.currentSrc,
+    });
+  }
+  return report(results);
+}
+
+async function runVideoPolicyCase(kind) {
+  const frame = await renderAt(1200, '/how-we-built-this');
+  frame.scrollIntoView({ block: 'start' });
+  const doc = frame.contentDocument;
+  const win = frame.contentWindow;
+  const helper = doc.createElement('script');
+  helper.type = 'module';
+  helper.nonce = 'aem';
+  helper.src = '/tools/frame-helper.js';
+  const loaded = new Promise((resolve) => {
+    helper.addEventListener('load', resolve, { once: true });
+  });
+  doc.head.append(helper);
+  await loaded;
+  const raw = await (await fetch('/how-we-built-this.plain.html')).text();
+  const container = doc.createElement('main');
+  container.innerHTML = raw;
+  const hero = container.querySelector('.video-hero');
+  doc.body.replaceChildren(hero);
+  await wait(50); // Let the previous player's removal observer release its source.
+  const motion = new win.EventTarget();
+  motion.matches = kind === 'reduced-motion';
+  const connection = new win.EventTarget();
+  connection.saveData = kind === 'save-data';
+  const mediaPrototype = win.HTMLMediaElement.prototype;
+  const sourceProperty = Object.getOwnPropertyDescriptor(mediaPrototype, 'src');
+  const nativePlay = mediaPrototype.play;
+  let assignments = 0;
+  Object.defineProperty(mediaPrototype, 'src', {
+    ...sourceProperty,
+    set(value) { assignments += 1; sourceProperty.set.call(this, value); },
+  });
+  if (['autoplay-rejected', 'play-interrupted'].includes(kind)) {
+    const errorName = kind === 'play-interrupted' ? 'AbortError' : 'NotAllowedError';
+    mediaPrototype.play = () => Promise.reject(new win.DOMException('Test rejection', errorName));
+  }
+  const result = { kind, pageVisible: !doc.hidden };
+  try {
+    win.alcDecorateVideoHero(hero, { motion, connection });
+    await hero.querySelector('img').decode();
+    const startHeight = hero.getBoundingClientRect().height;
+    if (['reduced-motion', 'save-data'].includes(kind)) {
+      await wait(250);
+      result.noVideo = !hero.querySelector('video');
+      result.sourceAssignments = assignments;
+    } else {
+      for (let i = 0; i < 100 && !hero.querySelector('video'); i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        await wait(50);
+      }
+      const player = hero.querySelector('video');
+      if (!player) throw new Error('Positive media control did not instantiate');
+      if (kind === 'media-error') {
+        player.dispatchEvent(new win.Event('error'));
+        result.playerRemoved = !hero.querySelector('video');
+        result.fallback = hero.dataset.playback;
+      } else if (kind === 'autoplay-rejected') {
+        await wait(100);
+        result.posterRetained = !hero.classList.contains('video-has-frame');
+        result.manualPlayVisible = !hero.querySelector('button').hidden;
+        mediaPrototype.play = nativePlay;
+        hero.querySelector('button').click();
+        for (let i = 0; i < 100 && hero.dataset.playback !== 'playing'; i += 1) {
+          // eslint-disable-next-line no-await-in-loop
+          await wait(50);
+        }
+        result.manualRecovery = hero.dataset.playback === 'playing';
+      } else if (kind === 'play-interrupted') {
+        await wait(100);
+        mediaPrototype.play = nativePlay;
+        doc.dispatchEvent(new win.Event('visibilitychange'));
+        for (let i = 0; i < 100 && hero.dataset.playback !== 'playing'; i += 1) {
+          // eslint-disable-next-line no-await-in-loop
+          await wait(50);
+        }
+        result.interruptionRecovered = hero.dataset.playback === 'playing';
+      } else if (kind === 'motion-change') {
+        const event = new win.Event('change');
+        event.matches = true;
+        motion.dispatchEvent(event);
+        result.preferenceUnloaded = !hero.querySelector('video')
+          && player.getAttribute('src') === null;
+        const resume = new win.Event('change');
+        resume.matches = false;
+        motion.dispatchEvent(resume);
+        for (let i = 0; i < 100 && hero.dataset.playback !== 'playing'; i += 1) {
+          // eslint-disable-next-line no-await-in-loop
+          await wait(50);
+        }
+        result.preferenceRecovered = hero.dataset.playback === 'playing';
+      } else if (kind === 'cleanup') {
+        hero.remove();
+        await wait(100);
+        result.detachedSourceCleared = player.getAttribute('src') === null;
+        result.detachedPaused = player.paused;
+      }
+    }
+    result.posterRetained = result.posterRetained
+      ?? hero.querySelector('img').naturalWidth > 0;
+    result.copyRetained = !!hero.querySelector('h1');
+    if (hero.isConnected) {
+      result.geometryStable = hero.getBoundingClientRect().height === startHeight;
+    }
+  } finally {
+    mediaPrototype.play = nativePlay;
+    Object.defineProperty(mediaPrototype, 'src', sourceProperty);
+  }
+  return report(result);
 }
 
 async function runDemoJourney(width = 1200) {
@@ -220,3 +376,5 @@ window.geometry = geometry;
 window.runMatrix = runMatrix;
 window.runMarkers = runMarkers;
 window.runDemoJourney = runDemoJourney;
+window.runVideoMatrix = runVideoMatrix;
+window.runVideoPolicyCase = runVideoPolicyCase;

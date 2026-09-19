@@ -1,5 +1,7 @@
 import { ownField } from '../../scripts/media-fields.js';
-import { allowsBackgroundMotion, resolveVideoSource } from '../../scripts/video-policy.js';
+import {
+  allowsBackgroundMotion, resolveVideoSource, selectPlayableVideo,
+} from '../../scripts/video-policy.js';
 
 /** Canonical media/link/copy nodes stay intact; the player is a disposable enhancement. */
 export default function decorate(block, options = {}) {
@@ -7,9 +9,10 @@ export default function decorate(block, options = {}) {
   const doc = block.ownerDocument;
   const win = doc.defaultView;
   const rows = [...block.children];
-  const link = [...block.querySelectorAll('a[href]')]
-    .find((a) => resolveVideoSource(a.getAttribute('href'), doc.location.href));
-  const sourceRow = rows.find((row) => row.contains(link));
+  const links = [...block.querySelectorAll('a[href]')]
+    .filter((a) => resolveVideoSource(a.getAttribute('href'), doc.location.href));
+  const [link] = links;
+  const sourceRow = link && rows.find((row) => row.contains(link));
   const posterRow = rows.find((row) => row.querySelector('img'));
   const copyRow = rows.find((row) => row.querySelector('h1')) || rows.at(-1);
   sourceRow?.classList.add('video-source');
@@ -33,8 +36,18 @@ export default function decorate(block, options = {}) {
   block.dataset.decorated = 'true';
   block.dataset.playback = 'static';
   const authoring = doc.documentElement.getAttribute('quick-edit') === 'true';
-  const source = resolveVideoSource(link?.getAttribute('href'), doc.location.href);
-  if (authoring || !source || !poster) return;
+  if (authoring || !links.length || !poster) return;
+  const probe = doc.createElement('video');
+  const source = selectPlayableVideo(
+    links.map((a) => resolveVideoSource(a.getAttribute('href'), doc.location.href)),
+    (type) => probe.canPlayType(type),
+  );
+  if (!source) {
+    block.dataset.playback = 'unavailable';
+    block.dataset.videoError = 'unsupported-codec';
+    return;
+  }
+  block.dataset.videoFormat = new URL(source).pathname.split('.').at(-1);
 
   const motion = options.motion || win.matchMedia('(prefers-reduced-motion: reduce)');
   const connection = options.connection ?? win.navigator.connection;
@@ -121,6 +134,7 @@ export default function decorate(block, options = {}) {
       }, { signal });
       player.addEventListener('error', () => {
         if (video !== player) return;
+        block.dataset.videoError = String(player.error?.code || 'unknown');
         state.failed = true;
         reconcile();
       }, { signal });
@@ -130,8 +144,10 @@ export default function decorate(block, options = {}) {
     }
     if (!state.blocked && video.paused) {
       const player = video;
-      player.play().catch(() => {
+      player.play().catch((error) => {
         if (video !== player || state.destroyed) return;
+        // Visibility/user pauses can interrupt buffering; that is not an autoplay denial.
+        if (error.name === 'AbortError') return;
         state.blocked = true;
         block.dataset.playback = 'paused';
         updateButton();

@@ -8,7 +8,7 @@ named references to other migration projects.
 
 One `video-hero` block inside the existing `story-cover, cinematic` section:
 
-1. One canonical MP4 link.
+1. Canonical MP4/H.264 and optional WebM/VP9 links in one media row.
 2. One canonical decorative poster image.
 3. The live eyebrow, H1, lede, CTA and independent-demo/film-credit note.
 
@@ -47,6 +47,10 @@ must also hold if the reusable block is placed on a routed page.
 - Web delivery is a separately retained H.264 CRF20 derivative, without audio
   and with fast-start metadata: 2,224,471 bytes. Average SSIM against the native
   film was 0.992149; this is not a subjective-quality score.
+- A VP9/WebM alternative is 2,308,715 bytes with average SSIM 0.985948. Actual
+  playback testing found that Studio's open-source Chromium build cannot decode
+  H.264. Codec-qualified capability selection uses the WebM there, while keeping
+  MP4 for browsers that support it. Only the selected source is requested.
 - Poster: first decoded frame, WebP quality 88, 53,942 bytes.
 - Original generations, prompts, receipts, reviews, hashes and lineage remain
   in the Studio production package. Model-private reasoning is not included in
@@ -65,6 +69,9 @@ must also hold if the reusable block is placed on a routed page.
   retained when scrolling back.
 - An autoplay rejection leaves the poster and a manual Play action. A media
   error removes the generated player and preserves the poster and copy.
+- An expected AbortError from pausing during buffering is not misclassified as
+  an autoplay denial. Unsupported codecs and actual media errors retain a
+  diagnostic code instead of losing the failure meaning during player cleanup.
 - The visible control has a 44px minimum target and an action-accurate Play/Pause
   accessible name. There is no audio stream in the delivery file.
 - Abortable listeners and a removal observer clean up the player, observers and

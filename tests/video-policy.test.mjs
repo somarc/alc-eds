@@ -1,12 +1,19 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { allowsBackgroundMotion, resolveVideoSource } from '../scripts/video-policy.js';
+import { allowsBackgroundMotion, resolveVideoSource, selectPlayableVideo } from '../scripts/video-policy.js';
 
 test('authoring, reduced motion and Save-Data suppress automatic video', () => {
   assert.equal(allowsBackgroundMotion(), true);
   for (const key of ['authoring', 'reducedMotion', 'saveData']) {
     assert.equal(allowsBackgroundMotion({ [key]: true }), false);
   }
+});
+
+test('a browser without H.264 selects the supplied VP9 alternative', () => {
+  const sources = ['https://example.com/film.mp4', 'https://example.com/film.webm'];
+  assert.equal(selectPlayableVideo(sources, (type) => (type.includes('vp9') ? 'probably' : '')), sources[1]);
+  assert.equal(selectPlayableVideo(sources, () => 'probably'), sources[0]);
+  assert.equal(selectPlayableVideo(sources, () => ''), null);
 });
 
 test('only ordinary HTTP(S) video links become media sources', () => {
