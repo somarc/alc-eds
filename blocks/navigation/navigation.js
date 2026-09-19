@@ -20,8 +20,9 @@ export default function decorate(block) {
     [...brand.children].forEach((field, i) => ownField(field, i ? 'nav-brand-compact' : 'nav-brand-wide'));
   }
   menu.classList.add('navigation-menu');
-  const shell = doc.createElement('div');
+  const shell = doc.createElement('nav');
   shell.className = 'navigation-bar';
+  shell.setAttribute('aria-label', 'Primary');
   menu.before(shell);
   shell.append(menu);
   const mobileButton = doc.createElement('button');

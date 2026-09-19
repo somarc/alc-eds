@@ -61,6 +61,20 @@
 }
 
 @layer base {
+  .skip-link {
+    position: fixed;
+    inset: 1rem auto auto 1rem;
+    transform: translateY(-200%);
+    padding: 0.75rem 1rem;
+    background: #fff;
+    color: var(--link-color);
+    z-index: 1000;
+  }
+
+  .skip-link:focus {
+    transform: none;
+  }
+
   body {
     font: 1rem / 1.4286 var(--body-font-family);
     color: var(--text-color);

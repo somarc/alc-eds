@@ -55,6 +55,15 @@ export async function loadPage(doc = document) {
   doc.documentElement.lang = 'en';
   const main = doc.querySelector('main');
   if (!main) return;
+  main.id ||= 'main';
+  main.tabIndex = -1;
+  if (!doc.querySelector('body > .skip-link')) {
+    const skip = doc.createElement('a');
+    skip.className = 'skip-link';
+    skip.href = `#${main.id}`;
+    skip.textContent = 'Skip to main content';
+    doc.body.prepend(skip);
+  }
   decorateMain(main);
   doc.body.classList.add('appear');
   await Promise.all([

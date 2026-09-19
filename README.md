@@ -9,6 +9,7 @@ not the official Atlantic Lottery site.
 - [Canvas / homepage](https://da.live/canvas?ref=migration-fidelity#/somarc/alc-eds/index)
 - [DA content](https://da.live/#/somarc/alc-eds)
 - [Assessment, block shapes and boundaries](docs/MIGRATION.md)
+- [Validation evidence and remaining Canvas sign-in gate](docs/VALIDATION.md)
 
 ## Development
 

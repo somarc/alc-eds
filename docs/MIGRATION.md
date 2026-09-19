@@ -46,8 +46,10 @@ semantic nodes. The script never imports legacy application scripts or clientlib
 | `navigation` | `.header-nav ul.yamm > li`, `header.tablet-desktop` | top: brand/search/tools/account; menu: four primary groups with lists |
 | `site-footer` | `footer.main-footer` | newsletter row · social row · four link groups · legal/partner region |
 
-The single mobile winning-numbers banner uses `promo-rail (mobile-banner)`.
-Section headers are ordinary H2 content, not blocks. Section Metadata owns
+The single mobile winning-numbers banner uses `promo-rail (mobile-banner)` with
+two cells: mobile artwork and link. Game cards are a mobile carousel and a desktop
+grid, as observed in the source runtime. Section headers are ordinary H2 content,
+not blocks. Section Metadata owns
 full-bleed, colored title bands, and the two-thirds/one-third featured composition.
 
 The captured homepage contains 5 campaign slides, 4 winners, 7 cards and 4 rail
