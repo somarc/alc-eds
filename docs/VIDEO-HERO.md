@@ -98,3 +98,44 @@ fallback and detached-player cleanup. Test a no-script source view separately.
 Do not infer real Canvas edit/save/image-drop success from wrapper simulation.
 
 No live publication or merge to main is part of this enhancement.
+
+## Verified on 2026-09-19
+
+- Both MP4 routes redirect to the expected content-addressed media and return
+  `206` for ranged requests; poster delivery returns `200` with `image/webp`.
+- The actual hosted page played the VP9-in-MP4 source in Studio Chromium 150 at
+  1280×720, muted, inline and looping. Native pointer Pause held time stationary;
+  Enter on the same control resumed playback.
+- In that observed navigation, the poster response completed at 493ms and the
+  film request began at 836ms. This proves the ordering in that run, not a CWV or
+  general network-speed claim.
+- The real-runtime viewport matrix passed 320, 390, 768, 1200 and 1440px: full
+  available width, no document overflow, loaded poster, active playback, and
+  unchanged 831px hero geometry in the 900px test viewport.
+- Controlled browser policy cases passed: reduced motion and Save-Data create no
+  player/source assignments; media error preserves poster/copy; autoplay denial
+  exposes a working manual Play action; expected play interruption recovers;
+  live motion-preference changes unload/recreate the player; removal clears the
+  detached player's source and pauses it. These use isolated injected browser
+  primitives, not a claim that every OS/browser setting was manually exercised.
+- At 390/1200px, two decoration passes preserved 180 instrumented prose nodes,
+  one poster image, 12 block roots and all authored links. Simulated editor
+  wrappers retained hero/card geometry without overflow; no player exists in
+  authoring mode. Real Canvas editing/saving remains unverified.
+- A conservative all-white-frame calculation at the actual text rectangles
+  passed contrast intent at all five widths: large heading at least 3.69:1;
+  body/eyebrow/note at least 4.74:1. This is a hero-specific bound from the
+  implemented scrim, not full accessibility certification.
+- A script-free snapshot of the actual served HTML retained its loaded poster,
+  white live H1 and 820px stage, with zero video elements/film requests and no
+  horizontal overflow. It is a verification artifact, not the authored page.
+- Final DA full audit: 0 errors, 0 warnings, all 4 poster media candidates valid.
+  Code contracts scanned all four DA documents with no missing assets/errors.
+- The homepage/return journey passed again. At 320, 390 and 1440px the original
+  hero/card landmarks, one visible brand, seven cards, four promotions and tested
+  controls remained intact. Its 107 off-home links still target this story.
+
+Local harness entry points: `runVideoMatrix()`, `runVideoPolicyCase(kind)` and
+`runMarkers(width, '/how-we-built-this')`. The policy cases are `reduced-motion`,
+`save-data`, `media-error`, `autoplay-rejected`, `play-interrupted`, `motion-change`
+and `cleanup`.

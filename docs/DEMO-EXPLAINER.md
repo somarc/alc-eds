@@ -21,7 +21,9 @@ initial build through `8889b16`; this explainer and later activity are excluded.
 Content lives at `/somarc/alc-eds/how-we-built-this.html` in DA. No authored HTML
 fixture is stored in Git. Metadata selects `Template: build-story`.
 
-- Default content owns the H1, section headings, prose and ordinary links.
+- Default content owns the section headings, body prose and ordinary links.
+  The later cinematic `video-hero` owns the live H1/hero copy and canonical media
+  fields; see `docs/VIDEO-HERO.md` for the current media and playback contract.
 - Existing `columns` has `build-masthead`, `build-nav`, `build-metrics`,
   `build-team`, `build-flow`, `build-ticket`, `build-receipts`, `build-lessons`
   and `build-evidence` variants. Each row has at most four cells.
@@ -82,7 +84,10 @@ repository/PR links are real engineering references, not simulated ALC routes.
 - Original-build metrics remain scoped; no live Canvas round-trip, pixel-perfect,
   CWV, whole-site migration or production-publication claim is introduced.
 
-## Verified on 2026-09-19
+## Verified initial two-page version on 2026-09-19
+
+This section records the pre-film extension through `015089e`. The subsequent
+cinematic enhancement and its updated counts are verified in `docs/VIDEO-HERO.md`.
 
 - The story was uploaded to DA and previewed through da-cli. Its rendered EDS
   document and block assets returned HTTP 200.
