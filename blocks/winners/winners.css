@@ -205,6 +205,26 @@
     border-color: #fff;
   }
 
+  .winners .winner-prize strong:first-child::first-letter {
+    font-size: 0.9375rem;
+  }
+
+  .winners .province-pe {
+    --province-map: url('../../icons/province-pe.png');
+  }
+
+  .winners .province-ns {
+    --province-map: url('../../icons/province-ns.png');
+  }
+
+  .winners .province-nl {
+    --province-map: url('../../icons/province-nl.png');
+  }
+
+  .winners .province-nb {
+    --province-map: url('../../icons/province-nb.png');
+  }
+
   @media (width >= 48em) {
     .winners {
       background-image: url('../../icons/winners-background.png');
@@ -333,26 +353,6 @@
       line-height: 1.4286;
       padding-inline: 6.875rem 1.5625rem;
     }
-  }
-
-  .winners .winner-prize strong:first-child::first-letter {
-    font-size: 0.9375rem;
-  }
-
-  .winners .province-pe {
-    --province-map: url('../../icons/province-pe.png');
-  }
-
-  .winners .province-ns {
-    --province-map: url('../../icons/province-ns.png');
-  }
-
-  .winners .province-nl {
-    --province-map: url('../../icons/province-nl.png');
-  }
-
-  .winners .province-nb {
-    --province-map: url('../../icons/province-nb.png');
   }
 
   @media (width < 48em) {

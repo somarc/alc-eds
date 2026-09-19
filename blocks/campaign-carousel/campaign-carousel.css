@@ -104,6 +104,19 @@
     background: var(--blue);
   }
 
+  html[quick-edit='true'] .campaign-carousel .media-action {
+    inset: auto 1rem 3.75rem auto;
+    block-size: auto;
+    inline-size: auto;
+    background: #fff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+  }
+
+  html[quick-edit='true'] .campaign-carousel .media-action a {
+    font-size: 0.875rem;
+  }
+
   @media (width >= 48em) {
     .campaign-carousel {
       block-size: 32.8125rem;
@@ -134,19 +147,6 @@
     .campaign-carousel .carousel-controls {
       padding-inline: max(0px, calc((100% - 75rem) / 2));
     }
-  }
-
-  html[quick-edit='true'] .campaign-carousel .media-action {
-    inset: auto 1rem 3.75rem auto;
-    block-size: auto;
-    inline-size: auto;
-    background: #fff;
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-  }
-
-  html[quick-edit='true'] .campaign-carousel .media-action a {
-    font-size: 0.875rem;
   }
 
   @media (width < 22em) {

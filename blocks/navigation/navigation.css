@@ -180,6 +180,20 @@
     font-size: 0.875rem;
   }
 
+  html[quick-edit='true'] .navigation .nav-search a {
+    font-size: 0.75rem;
+  }
+
+  .navigation .has-compact .nav-brand-wide {
+    display: none;
+  }
+
+  .navigation .nav-brand-compact img {
+    inline-size: 5.3125rem;
+    block-size: 3.4375rem;
+    object-fit: contain;
+  }
+
   @media (width >= 48em) {
     .navigation .navigation-top {
       min-block-size: 5.6777rem;
@@ -338,19 +352,5 @@
       inline-size: 8.625rem;
       justify-self: center;
     }
-  }
-
-  html[quick-edit='true'] .navigation .nav-search a {
-    font-size: 0.75rem;
-  }
-
-  .navigation .has-compact .nav-brand-wide {
-    display: none;
-  }
-
-  .navigation .nav-brand-compact img {
-    inline-size: 5.3125rem;
-    block-size: 3.4375rem;
-    object-fit: contain;
   }
 }

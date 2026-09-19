@@ -76,8 +76,15 @@ def campaign_row(el, name):
     return [image(renditions.get(f'(min-width: {w}px)', ''), name) for w in [1200, 768, 320]] + [paragraph('') if not a else '<p>' + link(name, a['href']) + '</p>']
 
 def convert(source, output, snapshot, duplicate_winner_logo_url=None):
-    soup = BeautifulSoup(source.read_text(), 'html.parser')
-    home = []
+    source_html = source.read_text()
+    soup = BeautifulSoup(source_html, 'html.parser')
+    page_title = text(soup.title)
+    custom_title = re.search(r'const customTitle = "((?:\\.|[^"\\])*)"', source_html)
+    if custom_title:
+        # Decode only the literal, never execute the source application's script.
+        literal = re.sub(r'\\x([0-9a-fA-F]{2})', lambda m: '\\u00' + m[1], custom_title[1])
+        page_title = json.loads('"' + literal + '"')
+    home = [section('<h1>' + esc(page_title.split(' | ')[0]) + '</h1>', 'accessible-title')]
     mobile = soup.select_one('article.html-promo-full-link')
     if mobile:
         mobile_row = campaign_row(mobile, 'Winning numbers')
@@ -204,7 +211,7 @@ def convert(source, output, snapshot, duplicate_winner_logo_url=None):
     copyright_copy += paragraph(f'Migration preview · Source snapshot {snapshot}. Not the official Atlantic Lottery site. Draws and prizes are dated reference content, not live results. Account, play, search and subscription links continue on alc.ca; no account or payment data is collected here.')
     legal = [partners, policies, certs, copyright_copy]
     documents = {
-        'index.html': document(''.join(home), text(soup.title), soup.select_one('meta[name="description"]').get('content',''), snapshot),
+        'index.html': document(''.join(home), page_title, soup.select_one('meta[name="description"]').get('content',''), snapshot),
         'nav.html': document(section(block('navigation', [top, nav]), 'full-bleed'), 'Navigation', 'ALC migration shared navigation.', snapshot),
         'footer.html': document(section(block('site-footer', [newsletter, social, groups, legal]), 'full-bleed'), 'Footer', 'ALC migration shared footer.', snapshot),
     }

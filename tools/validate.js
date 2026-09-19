@@ -72,6 +72,18 @@ async function runMatrix(widths = [320, 375, 390, 767, 768, 991, 992, 1199, 1200
     result.cardCount = doc.querySelectorAll('.game-card').length;
     result.railCount = doc.querySelectorAll('.promo-rail:not(.mobile-banner) .promo-item').length;
     result.newsletterDisabled = doc.querySelector('.footer-subscribe input').disabled;
+    result.visibleBrandImages = [...doc.querySelectorAll('.nav-brand img')]
+      .filter((img) => img.getBoundingClientRect().width > 0).length;
+    if (width < 768) {
+      const cards = doc.querySelector('.game-cards');
+      cards.querySelector('.carousel-next').click();
+      result.mobileCardsNext = cards.dataset.selectedSlide === '1';
+      cards.querySelector('.carousel-previous').click();
+      const menu = doc.querySelector('.navigation-toggle');
+      menu.click();
+      result.mobileMenu = menu.getAttribute('aria-expanded') === 'true';
+      menu.click();
+    }
     results.push(result);
   }
   return report(results);

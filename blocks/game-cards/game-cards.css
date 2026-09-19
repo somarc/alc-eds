@@ -169,6 +169,20 @@
     margin: 0;
   }
 
+  html[quick-edit='true'] .game-cards .new-flag {
+    background: #f29400;
+    color: #fff;
+    text-align: center;
+  }
+
+  html[quick-edit='true'] .game-cards .new-flag p {
+    font-size: 1rem;
+  }
+
+  .game-cards .carousel-controls {
+    display: none;
+  }
+
   @media (width >= 48em) {
     .game-cards {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -185,20 +199,6 @@
     .game-cards .game-card-action {
       inset-inline: 1.75rem;
     }
-  }
-
-  html[quick-edit='true'] .game-cards .new-flag {
-    background: #f29400;
-    color: #fff;
-    text-align: center;
-  }
-
-  html[quick-edit='true'] .game-cards .new-flag p {
-    font-size: 1rem;
-  }
-
-  .game-cards .carousel-controls {
-    display: none;
   }
 
   @media (width < 48em) {

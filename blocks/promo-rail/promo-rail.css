@@ -41,6 +41,31 @@
     font-size: 0;
   }
 
+  html[quick-edit='true'] .promo-rail .media-action {
+    position: relative;
+    background: #fff;
+    padding: 0.25rem;
+  }
+
+  html[quick-edit='true'] .promo-rail .media-action a {
+    font-size: 0.875rem;
+  }
+
+  .promo-rail.mobile-banner .promo-item {
+    block-size: 4.6875rem;
+  }
+
+  .promo-rail.mobile-banner .rendition img {
+    block-size: 4.6875rem;
+    object-fit: none;
+    object-position: center;
+  }
+
+  .promo-rail.mobile-banner {
+    margin: 0;
+    padding: 0;
+  }
+
   @media (width >= 48em) {
     .promo-rail {
       inline-size: calc(50% - 0.625rem);
@@ -69,30 +94,5 @@
     .promo-rail .rendition-desktop {
       display: block;
     }
-  }
-
-  html[quick-edit='true'] .promo-rail .media-action {
-    position: relative;
-    background: #fff;
-    padding: 0.25rem;
-  }
-
-  html[quick-edit='true'] .promo-rail .media-action a {
-    font-size: 0.875rem;
-  }
-
-  .promo-rail.mobile-banner .promo-item {
-    block-size: 4.6875rem;
-  }
-
-  .promo-rail.mobile-banner .rendition img {
-    block-size: 4.6875rem;
-    object-fit: none;
-    object-position: center;
-  }
-
-  .promo-rail.mobile-banner {
-    margin: 0;
-    padding: 0;
   }
 }
