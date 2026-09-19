@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { demoHref, normalizeDemoTarget } from '../scripts/demo-routing.js';
+import { demoHref, normalizeDemoTarget, routeDemoLinks } from '../scripts/demo-routing.js';
 
 const page = 'https://migration-fidelity--alc-eds--somarc.aem.page/';
 const target = '/how-we-built-this';
@@ -29,4 +29,18 @@ test('same-page story anchors remain in-page and rewriting is idempotent', () =>
   assert.equal(demoHref(`${story}#proof`, target, story), `${story}#proof`);
   assert.equal(demoHref(target, target, page), target);
   assert.equal(demoHref('/games', null, page), '/games');
+});
+
+test('canonical hero media links are not navigation even on a demo-routed page', () => {
+  const doc = {
+    documentElement: { getAttribute: () => null },
+    querySelector: () => ({ content: target }),
+    location: { href: page },
+  };
+  const link = {
+    getAttribute: () => '/media/film.mp4',
+    closest: () => ({}),
+    set href(value) { assert.fail(`Media source was rewritten to ${value}`); },
+  };
+  assert.equal(routeDemoLinks({ ownerDocument: doc, querySelectorAll: () => [link] }), 0);
 });

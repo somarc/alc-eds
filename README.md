@@ -12,6 +12,7 @@ not the official Atlantic Lottery site.
 - [Assessment, block shapes and boundaries](docs/MIGRATION.md)
 - [Validation evidence and remaining Canvas sign-in gate](docs/VALIDATION.md)
 - [Two-page demo and explainer contract](docs/DEMO-EXPLAINER.md)
+- [Cinematic hero production and playback contract](docs/VIDEO-HERO.md)
 
 The homepage is the migration. Normal off-home navigation opens the DA-authored
 engineering story instead of an unmigrated lottery journey. Canonical source

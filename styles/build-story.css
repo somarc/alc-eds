@@ -34,13 +34,17 @@
     border-block-end: 0.625rem solid var(--green);
   }
 
+  .build-story-page main > .story-cover.cinematic {
+    padding: 0;
+  }
+
   .build-story-page .story-cover > .default-content-wrapper,
   .build-story-page .story-outro > .default-content-wrapper {
     max-inline-size: 70rem;
     margin-inline: auto;
   }
 
-  .build-story-page .story-cover h1 {
+  .build-story-page .story-cover > :where(.default-content-wrapper) h1 {
     max-inline-size: 19ch;
     margin-block: 1.25rem 1.75rem;
     color: #fff;
@@ -48,14 +52,14 @@
     letter-spacing: -0.045em;
   }
 
-  .build-story-page .story-cover p {
+  .build-story-page .story-cover > :where(.default-content-wrapper) p {
     max-inline-size: 63ch;
     margin-block: 0 1rem;
     font-size: clamp(1.125rem, 2vw, 1.5rem);
     line-height: 1.5;
   }
 
-  .build-story-page .story-cover strong {
+  .build-story-page .story-cover > :where(.default-content-wrapper) strong {
     font-family: var(--heading-font-family);
     font-size: 0.8125rem;
     letter-spacing: 0.08em;
@@ -65,7 +69,7 @@
     color: #fff;
   }
 
-  .build-story-page .story-cover a,
+  .build-story-page .story-cover > :where(.default-content-wrapper) a,
   .build-story-page .story-outro strong a {
     display: inline-flex;
     align-items: center;
@@ -79,7 +83,7 @@
     letter-spacing: 0;
   }
 
-  .build-story-page .story-cover em {
+  .build-story-page .story-cover > :where(.default-content-wrapper) em {
     color: #d6edfb;
     font-size: 0.8125rem;
     font-style: normal;
@@ -206,7 +210,7 @@
     }
   }
 
-  .build-story-page .story-cover a:hover,
+  .build-story-page .story-cover > :where(.default-content-wrapper) a:hover,
   .build-story-page .story-outro strong a:hover {
     background: #e8f5fd;
     text-decoration: none;

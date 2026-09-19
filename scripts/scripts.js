@@ -1,5 +1,5 @@
 import {
-  decorateSections, decorateBlocks, loadSections, loadHeader, loadFooter, loadCSS,
+  decorateSections, decorateBlocks, loadBlock, loadSections, loadHeader, loadFooter, loadCSS,
 } from './aem.js';
 import { routeDemoLinks } from './demo-routing.js';
 
@@ -71,6 +71,8 @@ export async function loadPage(doc = document) {
     doc.body.prepend(skip);
   }
   decorateMain(main);
+  const videoHero = main.querySelector('.video-hero');
+  if (videoHero) await loadBlock(videoHero);
   if (isStory) {
     ['team', 'blueprint', 'qmd', 'proof', 'scale'].forEach((name) => {
       const section = main.querySelector(`.story-${name}`);

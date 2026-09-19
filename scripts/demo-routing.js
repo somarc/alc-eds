@@ -1,3 +1,5 @@
+import { resolveVideoSource } from './video-policy.js';
+
 /** Demo navigation is explicit page configuration, not a global click hijack. */
 export function normalizeDemoTarget(value, pageURL) {
   if (!value?.startsWith('/') || value.startsWith('//')) return null;
@@ -50,6 +52,8 @@ export function routeDemoLinks(root) {
   let changed = 0;
   root.querySelectorAll('a[href]').forEach((link) => {
     const href = link.getAttribute('href');
+    // A video's canonical source is authoring data, not a navigation CTA.
+    if (link.closest('.video-hero') && resolveVideoSource(href, doc.location.href)) return;
     const next = demoHref(href, target, doc.location.href);
     if (next === href) return;
     const role = linkRole(href, doc.location.href);

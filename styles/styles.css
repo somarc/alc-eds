@@ -137,6 +137,114 @@
   }
 }
 
+/* Eager, block-scoped geometry keeps the canonical poster/copy useful before enhancement. */
+@layer components {
+  .video-hero {
+    --hero-stage: clamp(42rem, calc(100svh - 4.3125rem), 54rem);
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-block-size: var(--hero-stage);
+    background: #032b4a;
+    color: #fff;
+  }
+
+  .video-hero > :where(div:has(a[href*='.mp4'], a[href*='.webm'], a[href*='.ogg']):not(:has(h1))) {
+    display: none;
+  }
+
+  .video-hero > :where(div:has(img):not(:has(h1))) {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .video-hero > :where(div:has(img):not(:has(h1))) :where(div, p, picture) {
+    display: block;
+    block-size: 100%;
+    margin: 0;
+  }
+
+  .video-hero > :where(div:has(img):not(:has(h1))) img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: 65% center;
+  }
+
+  .video-hero > :where(div:has(h1)) {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    min-block-size: var(--hero-stage);
+    padding: clamp(3rem, 6vw, 5rem) 1.5rem 5rem;
+    background: linear-gradient(90deg, rgb(2 28 50 / 96%), rgb(2 28 50 / 84%) 30%, rgb(2 28 50 / 45%) 57%, rgb(2 28 50 / 4%) 84%);
+  }
+
+  .video-hero > :where(div:has(h1)) > div {
+    inline-size: 100%;
+    max-inline-size: 70rem;
+    margin-inline: auto;
+  }
+
+  .video-hero h1 {
+    max-inline-size: 13ch;
+    margin: 1rem 0 1.5rem;
+    color: #fff;
+    font: 700 clamp(2.75rem, 5.8vw, 5.5rem) / 1.04 var(--heading-font-family);
+    letter-spacing: -0.04em;
+  }
+
+  .video-hero p {
+    max-inline-size: 40ch;
+    margin-block: 0 1.25rem;
+    font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+    line-height: 1.5;
+  }
+
+  .video-hero p:where(:has(> strong):not(:has(a))) {
+    font: 700 0.8125rem / 1.5 var(--heading-font-family);
+    letter-spacing: 0.08em;
+  }
+
+  .video-hero p:where(:has(em)) {
+    max-inline-size: 56ch;
+    font-size: 0.8125rem;
+  }
+
+  .video-hero em {
+    color: #d7e8f3;
+    font-size: 0.8125rem;
+    font-style: normal;
+  }
+
+  .video-hero strong a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 3rem;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #fff;
+    border-radius: 2rem;
+    background: #fff;
+    color: var(--link-color);
+    font: 500 1rem / 1.25 var(--heading-font-family);
+    letter-spacing: 0;
+  }
+
+  @media (width < 62em) {
+    .video-hero > :where(div:has(img):not(:has(h1))) img {
+      object-position: 75% center;
+    }
+
+    .video-hero > :where(div:has(h1)) {
+      background: linear-gradient(0deg, rgb(2 28 50 / 98%), rgb(2 28 50 / 82%) 55%, rgb(2 28 50 / 65%));
+    }
+  }
+}
+
 @layer layout {
   main > .section.accessible-title {
     position: absolute;
