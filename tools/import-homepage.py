@@ -4,6 +4,8 @@
 Input is a captured public source document, not executable source scripts.
 Output MUST be the external da-cli content workspace, never this Git checkout.
 Upload and preview are deliberately separate, reviewed da-cli operations.
+This reconstructs the initial source capture, not later author edits or the
+demo-destination metadata. Do not replay it over the current DA documents blindly.
 """
 import argparse
 import copy

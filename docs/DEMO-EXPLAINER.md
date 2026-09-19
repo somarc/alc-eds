@@ -59,7 +59,8 @@ This supports ordinary, modified, middle-click and open-in-new-tab navigation.
 - The 404 document sends browser navigation to the story. If the story itself is
   unavailable, or quick edit is active, it leaves an explicit fallback instead of
   creating a redirect loop. This does not turn missing assets into successful
-  resources; the underlying missing response remains 404.
+  resources; the underlying missing response remains 404. The `/index` alias
+  returns to canonical `/` instead of being treated as an unmigrated destination.
 
 The story uses a minimal themed masthead instead of repeating the lottery
 transaction-navigation shell. Its section links stay within the story. Explicit
@@ -80,3 +81,40 @@ repository/PR links are real engineering references, not simulated ALC routes.
 - JS/CSS lint, importer/routing tests and DA/code audits pass.
 - Original-build metrics remain scoped; no live Canvas round-trip, pixel-perfect,
   CWV, whole-site migration or production-publication claim is introduced.
+
+## Verified on 2026-09-19
+
+- The story was uploaded to DA and previewed through da-cli. Its rendered EDS
+  document and block assets returned HTTP 200.
+- The rendered homepage has 110 anchors: 107 off-home links target the story;
+  the remaining links are Home and Skip to main content. Canonical DA hrefs
+  remain unchanged in quick-edit instrumentation tests.
+- Native Studio browser clicks proved a homepage game-card CTA → story →
+  masthead Back to homepage round trip. The command-copy button reported Copied.
+- The isolated runtime journey also passed search → story without forwarding
+  the typed query, unknown-page → story, campaign advancement and disabled signup.
+- The homepage passed all ten existing viewport widths with no overflow, one
+  visible brand image, 7 cards, 4 promotions and functioning tested controls.
+  Its 390/1440px hero/card landmarks remained at the earlier measured geometry.
+- The story passed 320, 390, 768, 1200 and 1440px checks: no document overflow,
+  all blocks loaded, all six metrics and command-copy controls present, and
+  opportunity-card CTAs remained within their cards.
+- At 390/1200px, story instrumentation preserved 175 prose nodes and 11 block
+  roots; mounted wrappers retained the 256px card-copy region. Homepage tests
+  retained 52 prose nodes, 44 images, 5 roots and 220px card-copy regions. Neither
+  page overflowed after simulated editor mounting. Shared nav/footer checks
+  also preserved their original markers and links.
+- The story and homepage each passed `da audit full` with 0 errors and warnings.
+  Contracts scanned all 4 DA documents: 8 authored block types had JS/CSS HTTP
+  200, with no missing assets or errors.
+- New opportunity-plate foreground/background endpoint pairs were checked at
+  5.39:1 or better; command-copy and chapter links have 44px minimum targets.
+  This is a focused check, not full accessibility certification.
+
+`runDemoJourney()` and the updated `runMarkers()` are available in the local
+validation harness. The latter loads `/` for the homepage while fetching
+`/index.plain.html` for source; treating `/index` as a rendered page could
+otherwise follow the demo fallback and test against the wrong template.
+
+Real authenticated Canvas editing/saving/image replacement remains a separate
+gate. No production publication or merge to main was performed.

@@ -90,7 +90,8 @@ async function runMatrix(widths = [320, 375, 390, 767, 768, 991, 992, 1199, 1200
 }
 
 async function runMarkers(width = 1200, path = '/index') {
-  const frame = await renderAt(width, path);
+  // /index.plain.html is valid source, but the rendered homepage is canonical at /.
+  const frame = await renderAt(width, path === '/index' ? '/' : path);
   const doc = frame.contentDocument;
   const win = frame.contentWindow;
   const source = await (await fetch(`${path}.plain.html`)).text();
@@ -107,6 +108,8 @@ async function runMarkers(width = 1200, path = '/index') {
     .filter((e) => !e.matches('.section-metadata,.metadata'));
   blocks.forEach((e, i) => { e.dataset.blockIndex = String(i + 2001); });
   const sourceImages = images.map((e) => e.getAttribute('src'));
+  const sourceLinks = [...main.querySelectorAll('a[href]')]
+    .map((link) => ({ link, href: link.getAttribute('href') }));
   const repeatedImageSources = sourceImages.filter((src, i) => sourceImages.indexOf(src) !== i);
   const helper = doc.createElement('script');
   helper.type = 'module';
@@ -130,6 +133,7 @@ async function runMarkers(width = 1200, path = '/index') {
     prosePreserved: fields.every((e) => main.contains(e)) && unique('data-prose-index', fields.length),
     imagesPreserved: images.every((e) => main.contains(e)) && unique('data-image-index', images.length),
     blocksPreserved: blocks.every((e) => main.contains(e)) && unique('data-block-index', blocks.length),
+    authorLinksPreserved: sourceLinks.every(({ link, href }) => link.getAttribute('href') === href),
     duplicateDeliveredImageSources: repeatedImageSources,
   };
   await win.alcTestLoadPage(doc);
@@ -164,7 +168,55 @@ async function runMarkers(width = 1200, path = '/index') {
     caveat: 'Wrapper simulation only. Real Canvas typing, canonical persistence, selection and refresh require separate testing.',
   });
 }
+
+async function runDemoJourney(width = 1200) {
+  const frame = await renderAt(width);
+  let doc = frame.contentDocument;
+  const links = [...doc.querySelectorAll('a[href]')];
+  const result = {
+    anchors: links.length,
+    routed: doc.querySelectorAll('[data-demo-routed="true"]').length,
+    destinations: [...new Set(links.map((link) => link.getAttribute('href')))],
+    icons: ['cart', 'help', 'facebook', 'instagram'].every((role) => (
+      !!doc.querySelector(`[data-demo-role="${role}"]`)
+    )),
+    newsletterDisabled: doc.querySelector('.footer-subscribe input')?.disabled,
+  };
+  doc.querySelector('.campaign-carousel .carousel-next').click();
+  result.campaignNext = doc.querySelector('.campaign-carousel').dataset.selectedSlide === '1';
+  const activate = async (action) => {
+    const loaded = new Promise((resolve) => {
+      frame.addEventListener('load', resolve, { once: true });
+    });
+    action();
+    await loaded;
+    for (let i = 0; i < 150 && !frame.contentDocument.body.dataset.pageReady; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await wait(100);
+    }
+    doc = frame.contentDocument;
+  };
+  await activate(() => doc.querySelector('.game-card-action a').click());
+  result.homeToStory = frame.contentWindow.location.pathname === '/how-we-built-this'
+    && !!doc.querySelector('.build-blueprint');
+  await activate(() => doc.querySelector('.build-masthead a[href="/"]').click());
+  result.returnHome = frame.contentWindow.location.pathname === '/'
+    && !!doc.querySelector('.campaign-carousel');
+  const search = doc.querySelector('.nav-search input');
+  search.value = 'demo query must not leave the site';
+  await activate(() => search.dispatchEvent(new frame.contentWindow.KeyboardEvent('keydown', {
+    key: 'Enter', bubbles: true, cancelable: true,
+  })));
+  result.searchToStory = frame.contentWindow.location.pathname === '/how-we-built-this';
+  result.searchQueryOmitted = frame.contentWindow.location.search === '';
+  const missing = await renderAt(width, '/not-a-migrated-page');
+  result.unknownRouteToStory = missing.contentWindow.location.pathname === '/how-we-built-this'
+    && !!missing.contentDocument.querySelector('.build-blueprint');
+  result.caveat = 'Isolated real runtime; link activation is programmatic, not a full native gesture matrix.';
+  return report(result);
+}
 window.renderAt = renderAt;
 window.geometry = geometry;
 window.runMatrix = runMatrix;
 window.runMarkers = runMarkers;
+window.runDemoJourney = runDemoJourney;

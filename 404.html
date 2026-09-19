@@ -12,7 +12,8 @@
     const story = '/how-we-built-this';
     const path = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '');
     const authoring = new URLSearchParams(window.location.search).has('quick-edit');
-    if (path !== story && !authoring) window.location.replace(story);
+    const destination = path === '/index' ? '/' : story;
+    if (path !== story && !authoring) window.location.replace(destination);
   </script>
 </head>
 <body>

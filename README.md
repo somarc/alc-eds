@@ -6,10 +6,16 @@ not the official Atlantic Lottery site.
 
 - [Reference site](https://www.alc.ca/content/alc/en.html)
 - [Feature preview](https://migration-fidelity--alc-eds--somarc.aem.page/)
+- [How we made this site — the themed engineering story](https://migration-fidelity--alc-eds--somarc.aem.page/how-we-built-this)
 - [Canvas / homepage](https://da.live/canvas?ref=migration-fidelity#/somarc/alc-eds/index)
 - [DA content](https://da.live/#/somarc/alc-eds)
 - [Assessment, block shapes and boundaries](docs/MIGRATION.md)
 - [Validation evidence and remaining Canvas sign-in gate](docs/VALIDATION.md)
+- [Two-page demo and explainer contract](docs/DEMO-EXPLAINER.md)
+
+The homepage is the migration. Normal off-home navigation opens the DA-authored
+engineering story instead of an unmigrated lottery journey. Canonical source
+links remain in DA and are not rewritten in Canvas authoring mode.
 
 ## Development
 

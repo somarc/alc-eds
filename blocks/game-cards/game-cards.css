@@ -181,13 +181,14 @@
     gap: 0.75rem;
     overflow: hidden;
     padding: 1rem 1rem 3rem;
-    background: linear-gradient(135deg, #009ddb, #006faf);
+    background: linear-gradient(135deg, var(--link-color), #00529b);
     color: #fff;
     isolation: isolate;
   }
 
   .game-cards.engineering .game-card:nth-child(even) .game-card-media {
-    background: linear-gradient(135deg, #aaba0a, #788500);
+    background: linear-gradient(135deg, #dce995, var(--green));
+    color: #243800;
   }
 
   .game-cards.engineering .game-card-media::before {
@@ -196,7 +197,7 @@
     inset: -2rem -2rem auto auto;
     inline-size: 10rem;
     block-size: 10rem;
-    border: 2rem solid rgb(255 255 255 / 10%);
+    border: 2rem solid rgb(255 255 255 / 6%);
     border-radius: 50%;
     pointer-events: none;
     z-index: -1;

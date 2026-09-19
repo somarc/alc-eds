@@ -69,9 +69,12 @@ editing that lettering requires replacement artwork, not a text field.
 - Draws, jackpots and winners are visibly labelled as a dated reference snapshot
   in the preview footer, not presented as live data. Production requires an approved
   live-data integration and freshness/error contracts.
-- Account, gameplay, search and subscription destinations continue on `alc.ca`.
-  No credentials, payments, subscriptions or player records are accepted locally.
-  The newsletter input is explicitly disabled; its link opens the official site.
+- Canonical imported account, gameplay, search and subscription destinations
+  remain the original `alc.ca` links in DA. The subsequent two-page demo mode
+  routes normal rendered off-home links to `/how-we-built-this`; Canvas retains
+  the canonical values. No credentials, payments, subscriptions or player records
+  are accepted locally. The newsletter input stays disabled. See
+  `docs/DEMO-EXPLAINER.md` for this explicit presentation-layer routing contract.
 - The broken source `winners.html.html` URL is normalized to `winners.html`.
 - Preview includes `noindex, nofollow` and an independent-migration notice.
 - Source art and font rights must be reviewed before any production reuse.

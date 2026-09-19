@@ -182,6 +182,7 @@
 
   .columns.build-nav a {
     display: block;
+    min-block-size: 2.75rem;
     padding: 0.75rem;
     color: var(--link-color);
     font: 500 0.8125rem / 1.3 var(--heading-font-family);
